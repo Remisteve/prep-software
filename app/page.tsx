@@ -811,107 +811,6 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Enhanced PrEP Educational Section */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-white via-blue-50/20 to-white">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-20">
-            <div className="relative inline-block mb-10">
-              <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full blur-2xl opacity-30 animate-pulse"></div>
-              <div className="relative p-5 bg-gradient-to-r from-blue-100 to-purple-100 rounded-full">
-                <BookOpen className="h-14 w-14 text-blue-600" />
-              </div>
-            </div>
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6">
-              PrEP Education Center
-            </h2>
-            <p className="text-xl md:text-2xl lg:text-3xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
-              <span className="font-semibold text-blue-600">Power</span> • 
-              <span className="font-semibold text-purple-600"> Protection</span> • 
-              <span className="font-semibold text-pink-600"> Peace of Mind</span>
-            </p>
-            <p className="text-lg text-gray-500 mt-4 font-medium">Empowering everyone with knowledge for prevention</p>
-          </div>
-          
-          <div className="grid lg:grid-cols-2 xl:grid-cols-3 gap-6 max-w-7xl mx-auto">
-            {prepEducationalContent.map((section, index) => (
-              <Card 
-                key={index} 
-                className={`group ${section.color} border-2 transition-all duration-500 shadow-lg hover:shadow-2xl transform hover:-translate-y-2 cursor-pointer overflow-hidden`}
-                onClick={() => setActivePrEPSection(activePrEPSection === index ? null : index)}
-              >
-                <div className={`absolute top-0 left-0 w-full h-1 bg-gradient-to-r ${section.gradient}`}></div>
-                <CardHeader className="pb-4">
-                  <div className="flex items-start justify-between">
-                    <div className="flex items-start space-x-4">
-                      <div className={`p-3 bg-gradient-to-br ${section.gradient} rounded-xl shadow-md text-white transform group-hover:rotate-6 transition-transform`}>
-                        {section.icon}
-                      </div>
-                      <div className="flex-1">
-                        <CardTitle className="text-xl md:text-2xl font-bold text-gray-900 mb-2">{section.title}</CardTitle>
-                        <CardDescription className="text-gray-600 text-base font-medium">{section.description}</CardDescription>
-                      </div>
-                    </div>
-                    <ChevronDown className={`h-6 w-6 text-gray-400 transition-transform duration-300 ${activePrEPSection === index ? 'rotate-180' : ''}`} />
-                  </div>
-                </CardHeader>
-                {activePrEPSection === index && (
-                  <CardContent className="pt-0 animate-in slide-in-from-top-2 duration-300">
-                    <div className="border-t border-gray-100 pt-4">
-                      <ul className="space-y-3">
-                        {section.details.map((detail, idx) => (
-                          <li key={idx} className="flex items-start space-x-3 group/item">
-                            <div className={`p-1 bg-gradient-to-r ${section.gradient} rounded-full shadow-sm`}>
-                              <CheckCircle className="h-5 w-5 text-white" />
-                            </div>
-                            <span className="text-gray-700 group-hover/item:text-gray-900 transition-colors">{detail}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </CardContent>
-                )}
-              </Card>
-            ))}
-          </div>
-
-          {/* Enhanced CTA for PrEP section */}
-          <div className="mt-20 relative">
-            <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 rounded-3xl blur-xl opacity-20"></div>
-            <div className="relative bg-gradient-to-r from-blue-600 to-purple-600 rounded-3xl p-12 md:p-16 text-white overflow-hidden">
-              <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
-              <div className="absolute bottom-0 left-0 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl"></div>
-              <div className="relative z-10 text-center">
-                <h3 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6">
-                  Ready to Start Your PrEP Journey?
-                </h3>
-                <p className="text-xl md:text-2xl mb-10 opacity-95 max-w-3xl mx-auto">
-                  Join the movement. Be part of the generation that ends HIV.
-                </p>
-                <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <Button 
-                    size="lg" 
-                    className="text-lg px-10 py-7 bg-white text-blue-600 hover:bg-gray-100 shadow-xl hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 font-semibold group" 
-                    onClick={() => handleNavigation('/patient-register')}
-                  >
-                    <Pill className="mr-3 h-5 w-5 group-hover:rotate-12 transition-transform" />
-                    Start PrEP Today
-                  </Button>
-                  <Button 
-                    size="lg" 
-                    variant="outline"
-                    className="text-lg px-10 py-7 border-2 border-white text-white hover:bg-white/10 backdrop-blur-sm font-semibold group" 
-                    onClick={() => handleNavigation('/about')}
-                  >
-                    <BookOpen className="mr-3 h-5 w-5 group-hover:rotate-12 transition-transform" />
-                    Learn More
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Enhanced Partners Section */}
       <section className="py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-white via-blue-50/20 to-white">
         <div className="max-w-7xl mx-auto">
@@ -1061,6 +960,109 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
+
+      {/* Enhanced PrEP Educational Section */}
+      <section className="py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-white via-blue-50/20 to-white">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-20">
+            <div className="relative inline-block mb-10">
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full blur-2xl opacity-30 animate-pulse"></div>
+              <div className="relative p-5 bg-gradient-to-r from-blue-100 to-purple-100 rounded-full">
+                <BookOpen className="h-14 w-14 text-blue-600" />
+              </div>
+            </div>
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6">
+              PrEP Education Center
+            </h2>
+            <p className="text-xl md:text-2xl lg:text-3xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
+              <span className="font-semibold text-blue-600">Power</span> • 
+              <span className="font-semibold text-purple-600"> Protection</span> • 
+              <span className="font-semibold text-pink-600"> Peace of Mind</span>
+            </p>
+            <p className="text-lg text-gray-500 mt-4 font-medium">Empowering everyone with knowledge for prevention</p>
+          </div>
+          
+          <div className="grid lg:grid-cols-2 xl:grid-cols-3 gap-6 max-w-7xl mx-auto">
+            {prepEducationalContent.map((section, index) => (
+              <Card 
+                key={index} 
+                className={`group ${section.color} border-2 transition-all duration-500 shadow-lg hover:shadow-2xl transform hover:-translate-y-2 cursor-pointer overflow-hidden`}
+                onClick={() => setActivePrEPSection(activePrEPSection === index ? null : index)}
+              >
+                <div className={`absolute top-0 left-0 w-full h-1 bg-gradient-to-r ${section.gradient}`}></div>
+                <CardHeader className="pb-4">
+                  <div className="flex items-start justify-between">
+                    <div className="flex items-start space-x-4">
+                      <div className={`p-3 bg-gradient-to-br ${section.gradient} rounded-xl shadow-md text-white transform group-hover:rotate-6 transition-transform`}>
+                        {section.icon}
+                      </div>
+                      <div className="flex-1">
+                        <CardTitle className="text-xl md:text-2xl font-bold text-gray-900 mb-2">{section.title}</CardTitle>
+                        <CardDescription className="text-gray-600 text-base font-medium">{section.description}</CardDescription>
+                      </div>
+                    </div>
+                    <ChevronDown className={`h-6 w-6 text-gray-400 transition-transform duration-300 ${activePrEPSection === index ? 'rotate-180' : ''}`} />
+                  </div>
+                </CardHeader>
+                {activePrEPSection === index && (
+                  <CardContent className="pt-0 animate-in slide-in-from-top-2 duration-300">
+                    <div className="border-t border-gray-100 pt-4">
+                      <ul className="space-y-3">
+                        {section.details.map((detail, idx) => (
+                          <li key={idx} className="flex items-start space-x-3 group/item">
+                            <div className={`p-1 bg-gradient-to-r ${section.gradient} rounded-full shadow-sm`}>
+                              <CheckCircle className="h-5 w-5 text-white" />
+                            </div>
+                            <span className="text-gray-700 group-hover/item:text-gray-900 transition-colors">{detail}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </CardContent>
+                )}
+              </Card>
+            ))}
+          </div>
+
+          {/* Enhanced CTA for PrEP section */}
+          <div className="mt-20 relative">
+            <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 rounded-3xl blur-xl opacity-20"></div>
+            <div className="relative bg-gradient-to-r from-blue-600 to-purple-600 rounded-3xl p-12 md:p-16 text-white overflow-hidden">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
+              <div className="absolute bottom-0 left-0 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl"></div>
+              <div className="relative z-10 text-center">
+                <h3 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6">
+                  Ready to Start Your PrEP Journey?
+                </h3>
+                <p className="text-xl md:text-2xl mb-10 opacity-95 max-w-3xl mx-auto">
+                  Join the movement. Be part of the generation that ends HIV.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                  <Button 
+                    size="lg" 
+                    className="text-lg px-10 py-7 bg-white text-blue-600 hover:bg-gray-100 shadow-xl hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 font-semibold group" 
+                    onClick={() => handleNavigation('/patient-register')}
+                  >
+                    <Pill className="mr-3 h-5 w-5 group-hover:rotate-12 transition-transform" />
+                    Start PrEP Today
+                  </Button>
+                  <Button 
+                    size="lg" 
+                    variant="outline"
+                    className="text-lg px-10 py-7 border-2 border-white text-white hover:bg-white/10 backdrop-blur-sm font-semibold group" 
+                    onClick={() => handleNavigation('/about')}
+                  >
+                    <BookOpen className="mr-3 h-5 w-5 group-hover:rotate-12 transition-transform" />
+                    Learn More
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      
 
       {/* Enhanced User Types Section */}
       <section className="py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-gray-50 via-white to-gray-50">
