@@ -15,6 +15,7 @@ export default defineConfig([
       'no-useless-escape': 'off',
       '@typescript-eslint/no-explicit-any': 'off',
       'react/react-in-jsx-scope': 'off',
+      'react/no-unescaped-entities': 'off',
     }
   }
 ]);

@@ -1,57 +1,32 @@
-import { initializeApp } from 'firebase/app';
-import { getAuth, connectAuthEmulator } from 'firebase/auth';
-import { getFirestore, connectFirestoreEmulator } from 'firebase/firestore';
-import { getStorage, connectStorageEmulator } from 'firebase/storage';
-import { getFunctions, connectFunctionsEmulator } from 'firebase/functions';
+// Import the functions you need from the SDKs you need
+import { getApps, initializeApp } from "firebase/app";
+import {getAuth} from 'firebase/auth'
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
 
-// Firebase configuration
-// Replace these with your actual Firebase config values
+// Import the functions you need from the SDKs you need
+// import { getAnalytics } from "firebase/analytics";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: process.env.REACT_APP_FIREBASE_API_KEY || "your-api-key",
-  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN || "your-project.firebaseapp.com",
-  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID || "your-project-id",
-  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET || "your-project.appspot.com",
-  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID || "123456789",
-  appId: process.env.REACT_APP_FIREBASE_APP_ID || "your-app-id",
-  measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID || "G-XXXXXXXXXX"
+  apiKey: "AIzaSyD2-zCxF_miDtnVEMDnNVcj_7Mxyp6Te1w",
+  authDomain: "otz-system.firebaseapp.com",
+  projectId: "otz-system",
+  storageBucket: "otz-system.firebasestorage.app",
+  messagingSenderId: "586862655167",
+  appId: "1:586862655167:web:8d2dce33d91de19539780a",
+  measurementId: "G-7RNMK2D257"
 };
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
+const app = !getApps().length ? initializeApp(firebaseConfig) : getApps()[0];
+const auth = getAuth(app);
 
-// Initialize Firebase services
-export const auth = getAuth(app);
-export const db = getFirestore(app);
-export const storage = getStorage(app);
-export const functions = getFunctions(app);
+// 
+// const analytics = getAnalytics(app);
 
-// Connect to emulators in development (optional)
-if (process.env.NODE_ENV === 'development' && process.env.REACT_APP_USE_EMULATORS === 'true') {
-  try {
-    connectAuthEmulator(auth, 'http://localhost:9099');
-    connectFirestoreEmulator(db, 'localhost', 8080);
-    connectStorageEmulator(storage, 'localhost', 9199);
-    connectFunctionsEmulator(functions, 'localhost', 5001);
-    console.log('Connected to Firebase emulators');
-  } catch (error) {
-    console.log('Error connecting to emulators:', error);
-  }
-}
 
-export default app;
-
-// Firestore collections structure
-export const COLLECTIONS = {
-  USERS: 'users',
-  HOSPITALS: 'hospitals',
-  APPOINTMENTS: 'appointments',
-  PATIENTS: 'patients',
-  MEDICATIONS: 'medications',
-  VIDEO_UPLOADS: 'video_uploads',
-  REQUESTS: 'requests',
-  NOTIFICATIONS: 'notifications',
-  CHATS: 'chats',
-  FRIEND_REQUESTS: 'friend_requests',
-  ACTIVITIES: 'activities',
-  ANALYTICS: 'analytics'
-} as const;
+export { auth }
