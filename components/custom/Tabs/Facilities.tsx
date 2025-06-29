@@ -1,4 +1,4 @@
-import { AlertCircle, Clock, Heart, MapPin, Phone, Search, Star } from 'lucide-react'
+import { MapPin, Search, Star } from 'lucide-react'
 import React, { useState } from 'react'
 import FacilityModal from './FacilityModalDemo';
 
@@ -26,7 +26,7 @@ interface FacilityInterface {
 const Facilities = () => {
 
     const [searchTerm, setSearchTerm] = useState('');
-    const [selectedFilter, setSelectedFilter] = useState('all');
+    // const [selectedFilter, setSelectedFilter] = useState('all');
     const [showMapView, setShowMapView] = useState(false);
 
 
@@ -142,13 +142,13 @@ const Facilities = () => {
             facility.address.toLowerCase().includes(searchTerm.toLowerCase()) ||
             facility.services.some(service => service.toLowerCase().includes(searchTerm.toLowerCase()));
 
-        const matchesFilter = selectedFilter === 'all' ||
-            (selectedFilter === 'injectable' && facility.services.some(s => s.includes('Injectable'))) ||
-            (selectedFilter === 'lgbtq' && facility.specialties.some(s => s.includes('LGBTQ+'))) ||
-            (selectedFilter === 'sameday' && facility.specialties.some(s => s.includes('Same-Day'))) ||
-            (selectedFilter === 'free' && facility.priceRange === '$');
+        // const matchesFilter = selectedFilter === 'all' ||
+        //     (selectedFilter === 'injectable' && facility.services.some(s => s.includes('Injectable'))) ||
+        //     (selectedFilter === 'lgbtq' && facility.specialties.some(s => s.includes('LGBTQ+'))) ||
+        //     (selectedFilter === 'sameday' && facility.specialties.some(s => s.includes('Same-Day'))) ||
+        //     (selectedFilter === 'free' && facility.priceRange === '$');
 
-        return matchesSearch && matchesFilter;
+        return matchesSearch
     });
 
     const FacilityCard = ({ facility }: { facility: FacilityInterface }) => (
@@ -260,10 +260,8 @@ const Facilities = () => {
                 <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
                     {filteredFacilities.map((facility) => (
 
-                        <>
-                            <FacilityCard key={facility.id} facility={facility} />
+                        <FacilityCard key={facility.id} facility={facility} />
 
-                        </>
                     ))}
                 </div>
             )}

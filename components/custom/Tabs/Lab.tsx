@@ -1,10 +1,8 @@
 import React from 'react';
 import {
-    Calendar,
     Clock,
     Check,
     Plus,
-    FileText,
     Download,
     Eye
 } from 'lucide-react';
@@ -138,47 +136,7 @@ const Lab = () => {
                 </button>
             </div>
 
-            {/* Quick Stats */}
-            <div className="grid md:grid-cols-4 gap-4">
-                <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-                    <div className="flex items-center space-x-3">
-                        <Clock className="h-8 w-8 text-yellow-600" />
-                        <div>
-                            <p className="text-sm font-medium text-yellow-900">Pending Results</p>
-                            <p className="text-2xl font-bold text-yellow-700">{labResults.pending.length}</p>
-                        </div>
-                    </div>
-                </div>
-                <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-                    <div className="flex items-center space-x-3">
-                        <Check className="h-8 w-8 text-green-600" />
-                        <div>
-                            <p className="text-sm font-medium text-green-900">Recent Results</p>
-                            <p className="text-2xl font-bold text-green-700">{labResults.recent.length}</p>
-                        </div>
-                    </div>
-                </div>
-                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                    <div className="flex items-center space-x-3">
-                        <Calendar className="h-8 w-8 text-blue-600" />
-                        <div>
-                            <p className="text-sm font-medium text-blue-900">Scheduled Tests</p>
-                            <p className="text-2xl font-bold text-blue-700">{labResults.scheduled.length}</p>
-                        </div>
-                    </div>
-                </div>
-                <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
-                    <div className="flex items-center space-x-3">
-                        <FileText className="h-8 w-8 text-purple-600" />
-                        <div>
-                            <p className="text-sm font-medium text-purple-900">Total Tests</p>
-                            <p className="text-2xl font-bold text-purple-700">
-                                {labResults.pending.length + labResults.recent.length + labResults.scheduled.length}
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+
 
             {/* Pending Results Section */}
             <div>
@@ -298,80 +256,6 @@ const Lab = () => {
                 </div>
             </div>
 
-            {/* Scheduled Tests Section */}
-            <div>
-                <div className="flex items-center space-x-3 mb-4">
-                    <Calendar className="h-6 w-6 text-blue-600" />
-                    <h3 className="text-xl font-semibold text-gray-900">Upcoming Lab Appointments</h3>
-                </div>
-
-                <div className="space-y-4">
-                    {labResults.scheduled.map((test) => (
-                        <div key={test.id} className="border border-blue-200 rounded-lg p-4 bg-blue-50">
-                            <div className="flex items-start justify-between">
-                                <div className="flex-1">
-                                    <div className="flex items-center space-x-3 mb-2">
-                                        <h4 className="text-lg font-semibold text-gray-900">{test.testName}</h4>
-                                        <span className="px-2 py-1 text-xs font-medium rounded-full bg-blue-100 text-blue-800">
-                                            SCHEDULED
-                                        </span>
-                                    </div>
-                                    <p className="text-gray-600 text-sm mb-3">{test.description}</p>
-                                    <div className="grid md:grid-cols-3 gap-4 text-sm">
-                                        <div>
-                                            <span className="font-medium text-gray-700">Date & Time:</span>
-                                            <p className="text-gray-900 font-semibold">
-                                                {new Date(test.scheduledDate).toLocaleDateString()} at {test.scheduledTime}
-                                            </p>
-                                        </div>
-                                        <div>
-                                            <span className="font-medium text-gray-700">Location:</span>
-                                            <p className="text-gray-600">{test.facility}</p>
-                                        </div>
-                                        <div>
-                                            <span className="font-medium text-gray-700">Instructions:</span>
-                                            <p className="text-gray-600">{test.instructions}</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="flex flex-col space-y-2">
-                                    <button className="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors">
-                                        Reschedule
-                                    </button>
-                                    <button className="border border-gray-300 text-gray-700 px-3 py-1 rounded text-sm hover:bg-gray-50 transition-colors">
-                                        Cancel
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            </div>
-
-            {/* Lab Information Footer */}
-            <div className="bg-gray-50 rounded-lg p-6">
-                <h4 className="text-lg font-semibold text-gray-900 mb-3">Important Lab Information</h4>
-                <div className="grid md:grid-cols-2 gap-6 text-sm text-gray-600">
-                    <div>
-                        <h5 className="font-medium text-gray-800 mb-2">Result Timing</h5>
-                        <ul className="space-y-1">
-                            <li>• HIV tests: 1-2 business days</li>
-                            <li>• Blood chemistry: 1-3 business days</li>
-                            <li>• STI panel: 2-5 business days</li>
-                            <li>• Comprehensive panels: 3-7 business days</li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h5 className="font-medium text-gray-800 mb-2">Preparation Tips</h5>
-                        <ul className="space-y-1">
-                            <li>• Fasting tests require 8-12 hours without food</li>
-                            <li>• Stay hydrated before blood draws</li>
-                            <li>• Bring a list of current medications</li>
-                            <li>• Arrive 15 minutes early for appointments</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
         </div>
     );
 };

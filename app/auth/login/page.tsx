@@ -5,24 +5,30 @@ import { Eye, EyeOff, Mail, Lock, Chrome, Heart } from 'lucide-react';
 import { signIn, useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation';
 
+interface NewErrors {
+  email?: string
+  general?: string
+  password?: string
+}
+
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingEmailPassword, setIsLoadingEmailPassword] = useState(false);
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
   const [formData, setFormData] = useState({
     email: '',
     password: ''
   });
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState<NewErrors>({});
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
       [name]: value
     }));
 
-    if (errors[name]) {
+    if (errors[name as keyof NewErrors]) {
       setErrors(prev => ({
         ...prev,
         [name]: ''
@@ -30,8 +36,10 @@ export default function LoginPage() {
     }
   };
 
+
+
   const validateForm = () => {
-    const newErrors = {};
+    const newErrors: NewErrors = {};
 
     if (!formData.email) {
       newErrors.email = 'Email is required';
@@ -51,13 +59,16 @@ export default function LoginPage() {
 
   const handleEmailLogin = async () => {
     if (!validateForm()) return;
+    setIsLoadingEmailPassword(true)
 
-
-    signIn('credentials', { ...formData, redirect: false })
+    await signIn('credentials', { ...formData, redirect: false })
+    setIsLoadingEmailPassword(false)
   };
 
   const handleGoogleLogin = async () => {
-    signIn('google', { ...formData, redirect: true })
+    setIsGoogleLoading(true)
+    await signIn('google', { ...formData, redirect: true })
+    setIsGoogleLoading(false)
 
   };
 
@@ -88,7 +99,7 @@ export default function LoginPage() {
           {/* Google Login Button */}
           <button
             onClick={handleGoogleLogin}
-            disabled={isGoogleLoading || isLoading}
+            disabled={isGoogleLoading || isLoadingEmailPassword}
             className="w-full flex items-center justify-center gap-3 bg-white hover:bg-blue-50 text-blue-700 font-medium py-3 px-4 rounded-lg border border-blue-200 transition-all duration-200 hover:border-blue-300 disabled:opacity-50 disabled:cursor-not-allowed mb-6 shadow-sm"
           >
             {isGoogleLoading ? (
@@ -132,7 +143,7 @@ export default function LoginPage() {
                   className={`w-full pl-10 pr-3 py-3 border ${errors.email ? 'border-red-300 focus:border-red-500 focus:ring-red-500' : 'border-blue-200 focus:border-blue-500 focus:ring-blue-500'
                     } rounded-lg text-blue-900 placeholder-blue-400 focus:outline-none focus:ring-2 transition-all duration-200`}
                   placeholder="your.email@hospital.com"
-                  disabled={isLoading || isGoogleLoading}
+                  disabled={isLoadingEmailPassword || isGoogleLoading}
                 />
               </div>
               {errors.email && (
@@ -155,13 +166,13 @@ export default function LoginPage() {
                   className={`w-full pl-10 pr-10 py-3 border ${errors.password ? 'border-red-300 focus:border-red-500 focus:ring-red-500' : 'border-blue-200 focus:border-blue-500 focus:ring-blue-500'
                     } rounded-lg text-blue-900 placeholder-blue-400 focus:outline-none focus:ring-2 transition-all duration-200`}
                   placeholder="Enter your secure password"
-                  disabled={isLoading || isGoogleLoading}
+                  disabled={isLoadingEmailPassword || isGoogleLoading}
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute right-3 top-1/2 transform -translate-y-1/2 text-blue-400 hover:text-blue-600 transition-colors duration-200"
-                  disabled={isLoading || isGoogleLoading}
+                  disabled={isLoadingEmailPassword || isGoogleLoading}
                 >
                   {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
@@ -177,14 +188,14 @@ export default function LoginPage() {
                 <input
                   type="checkbox"
                   className="w-4 h-4 text-blue-600 border-blue-300 rounded focus:ring-blue-500 focus:ring-2"
-                  disabled={isLoading || isGoogleLoading}
+                  disabled={isLoadingEmailPassword || isGoogleLoading}
                 />
                 <span className="ml-2 text-sm text-blue-700">Keep me signed in</span>
               </label>
               <button
                 type="button"
                 className="text-sm text-blue-600 hover:text-blue-800 font-medium transition-colors duration-200"
-                disabled={isLoading || isGoogleLoading}
+                disabled={isLoadingEmailPassword || isGoogleLoading}
               >
                 Forgot password?
               </button>
@@ -193,13 +204,13 @@ export default function LoginPage() {
             {/* Login Button */}
             <button
               onClick={handleEmailLogin}
-              disabled={isLoading || isGoogleLoading}
+              disabled={isLoadingEmailPassword || isGoogleLoading}
               className="w-full bg-gradient-to-r from-blue-600 to-teal-600 hover:from-blue-700 hover:to-teal-700 text-white font-medium py-3 px-4 rounded-lg transition-all duration-200 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
             >
-              {isLoading ? (
+              {isLoadingEmailPassword ? (
                 <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
               ) : (
-                'Access Medical Portalx'
+                'Access Medical Portal'
               )}
             </button>
           </div>
@@ -215,36 +226,9 @@ export default function LoginPage() {
           </div>
         </div>
 
-        {/* Security Notice */}
-        <div className="bg-blue-50 rounded-lg border border-blue-200 p-4 mt-4">
-          <div className="flex items-start">
-            <div className="flex-shrink-0">
-              <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                <Lock className="w-4 h-4 text-blue-600" />
-              </div>
-            </div>
-            <div className="ml-3">
-              <h3 className="text-sm font-medium text-blue-900">HIPAA Compliant Access</h3>
-              <p className="text-xs text-blue-700 mt-1">
-                This portal uses bank-level encryption to protect patient data and maintain medical privacy standards.
-              </p>
-            </div>
-          </div>
-        </div>
 
-        {/* Footer */}
-        <div className="text-center mt-6">
-          <p className="text-xs text-blue-500">
-            By accessing this portal, you agree to our{' '}
-            <button className="text-blue-700 hover:text-blue-900 transition-colors duration-200 font-medium">
-              Medical Privacy Policy
-            </button>
-            {' '}and{' '}
-            <button className="text-blue-700 hover:text-blue-900 transition-colors duration-200 font-medium">
-              HIPAA Compliance Terms
-            </button>
-          </p>
-        </div>
+
+
       </div>
     </div>
   );

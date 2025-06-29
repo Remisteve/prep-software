@@ -1,8 +1,7 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { initializeApp, cert, getApps, ServiceAccount } from "firebase-admin/app";
 import { getFirestore } from "firebase-admin/firestore";
 import serviceAccount from '../otz-system-firebase-adminsdk-fbsvc-afb6ae1ca3.json'
-
+import admin from 'firebase-admin'
 const firebaseAdmin =
   getApps().length === 0
     ? initializeApp({
@@ -10,4 +9,7 @@ const firebaseAdmin =
       })
     : getApps()[0];
 
-export const firestore = getFirestore();
+const firestore = getFirestore();
+const db = getFirestore(firebaseAdmin)
+const adminAuth = admin.auth()
+export {db, firestore, adminAuth}

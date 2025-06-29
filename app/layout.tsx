@@ -9,7 +9,6 @@ import { Toaster } from '@/components/ui/sonner'
 import { ThemeProvider } from '@/components/theme-provider'
 import { SessionProvider, useSession } from 'next-auth/react'
 import { ReactNode, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
 
 const inter = Inter({
   subsets: ['latin'],
@@ -27,7 +26,6 @@ function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  const router = useRouter()
   const { data: session, status } = useSession()
   useEffect(() => {
     if (status === 'loading') return;

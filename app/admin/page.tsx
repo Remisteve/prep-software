@@ -8,7 +8,6 @@ import {
     Package,
     Activity,
     Search,
-    Filter,
     Download,
     Plus,
     Edit,
@@ -17,14 +16,9 @@ import {
     AlertTriangle,
     CheckCircle,
     Clock,
-    TrendingUp,
-    Bell,
-    Settings,
-    LogOut,
-    ChevronDown,
-    Mail,
-    Phone
+    TrendingUp
 } from 'lucide-react';
+import Navbar from '@/components/custom/nav/Navbar';
 
 const AdminDashboard = () => {
     const [activeTab, setActiveTab] = useState('overview');
@@ -241,7 +235,7 @@ const AdminDashboard = () => {
         }
     ];
 
-    const getStatusColor = (status) => {
+    const getStatusColor = (status: string) => {
         switch (status) {
             case 'active':
             case 'completed':
@@ -264,7 +258,7 @@ const AdminDashboard = () => {
         }
     };
 
-    const getRiskLevelColor = (risk) => {
+    const getRiskLevelColor = (risk: string) => {
         switch (risk) {
             case 'low': return 'bg-green-100 text-green-800';
             case 'medium': return 'bg-yellow-100 text-yellow-800';
@@ -276,37 +270,8 @@ const AdminDashboard = () => {
     return (
         <div className="min-h-screen bg-gray-50">
             {/* Header */}
-            <header className="bg-white shadow-sm border-b border-gray-200">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex justify-between items-center py-4">
-                        <div className="flex items-center space-x-4">
-                            <Activity className="h-8 w-8 text-blue-600" />
-                            <h1 className="text-2xl font-bold text-gray-900">HealthCare+ Admin</h1>
-                        </div>
-                        <div className="flex items-center space-x-4">
-                            <button className="relative p-2 text-gray-600 hover:text-gray-900">
-                                <Bell className="h-6 w-6" />
-                                <span className="absolute top-0 right-0 h-4 w-4 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">
-                                    5
-                                </span>
-                            </button>
-                            <button className="p-2 text-gray-600 hover:text-gray-900">
-                                <Settings className="h-6 w-6" />
-                            </button>
-                            <div className="flex items-center space-x-3">
-                                <img
-                                    src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=32&h=32&fit=crop&crop=face"
-                                    alt="Admin"
-                                    className="h-8 w-8 rounded-full"
-                                />
-                                <span className="text-sm font-medium text-gray-700">Dr. Admin</span>
-                                <ChevronDown className="h-4 w-4 text-gray-500" />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </header>
 
+            <Navbar />
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 {/* Navigation Tabs */}
                 <div className="bg-white rounded-lg shadow-sm mb-8">
@@ -323,8 +288,8 @@ const AdminDashboard = () => {
                                     key={id}
                                     onClick={() => setActiveTab(id)}
                                     className={`py-4 px-1 border-b-2 font-medium text-sm flex items-center space-x-2 ${activeTab === id
-                                            ? 'border-blue-500 text-blue-600'
-                                            : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                                        ? 'border-blue-500 text-blue-600'
+                                        : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
                                         }`}
                                 >
                                     <Icon className="h-4 w-4" />

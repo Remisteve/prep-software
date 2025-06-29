@@ -17,8 +17,9 @@ import {
     MoreVertical
 } from 'lucide-react';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { MedicationInterface } from '@/app/profile/page';
 
-const Medication = ({ medicationData }) => {
+const Medication = ({ medicationData }: { medicationData: MedicationInterface }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [selectedMedication, setSelectedMedication] = useState('injectable');
 
