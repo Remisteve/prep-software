@@ -5,39 +5,33 @@ import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { 
+import {
   Heart, Shield, Users, Calendar, Activity, MessageSquare, Video, CheckCircle, ArrowRight,
-  Stethoscope, UserPlus, LogIn, Sparkles, Star, Building2, Phone, Mail, MapPin,
-  Globe, Target, Clock, Award, BookOpen, AlertTriangle, Info, Settings,
-  Lock, Menu, X, Loader2, Zap, TrendingUp, HeartHandshake, Pill, FileText, 
-  ChevronDown, Fingerprint, ShieldCheck, Command, Terminal, Cpu, Binary, Boxes
+  Stethoscope, UserPlus, Sparkles, Star, Building2, Phone, Mail, MapPin,
+  Globe, Target, Clock, Award, BookOpen, Info, Settings,
+  Lock, Menu, X, Zap, TrendingUp, HeartHandshake, Pill, FileText,
+  ChevronDown,
+  LogIn
 } from 'lucide-react';
 
 
 
 const SafetyIcon = () => (
   <svg className="h-8 w-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-    <path d="M12 2l3 3v6c0 3.5-1.5 6.5-3 8-1.5-1.5-3-4.5-3-8V5l3-3z"/>
-    <path d="M12 11v4"/>
-    <path d="M12 17h.01"/>
+    <path d="M12 2l3 3v6c0 3.5-1.5 6.5-3 8-1.5-1.5-3-4.5-3-8V5l3-3z" />
+    <path d="M12 11v4" />
+    <path d="M12 17h.01" />
   </svg>
 );
 
 export default function LandingPage() {
   const router = useRouter();
-  const [hiddenInput, setHiddenInput] = useState('');
-  const [showAdminPortal, setShowAdminPortal] = useState(false);
+
   const [activeFeature, setActiveFeature] = useState<number | null>(null);
   const [activePrEPSection, setActivePrEPSection] = useState<number | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  
-  // Enhanced admin access state
-  const [secretCode, setSecretCode] = useState('');
-  const [authStep, setAuthStep] = useState<'input' | 'verifying' | 'granted' | 'denied'>('input');
-  const [codeError, setCodeError] = useState('');
-  const [showFingerprint, setShowFingerprint] = useState(false);
-  const [biometricVerified, setBiometricVerified] = useState(false);
+
 
   // Handle scroll effect
   useEffect(() => {
@@ -49,82 +43,8 @@ export default function LandingPage() {
   }, []);
 
   // Enhanced hidden input detection with visual feedback
-  useEffect(() => {
-    const handleKeyPress = (e: KeyboardEvent) => {
-      const newInput = hiddenInput + e.key.toLowerCase();
-      setHiddenInput(newInput);
-      
-      // Check for trigger words
-      if (newInput.endsWith('chak') || newInput.endsWith('remi')) {
-        // Trigger haptic-like feedback with visual cue
-        document.body.style.transform = 'scale(0.99)';
-        setTimeout(() => {
-          document.body.style.transform = 'scale(1)';
-        }, 100);
-        
-        setShowAdminPortal(true);
-        setAuthStep('input');
-        setSecretCode('');
-        setCodeError('');
-        setBiometricVerified(false);
-        setHiddenInput('');
-      }
-      
-      // Clear after 20 characters
-      if (newInput.length > 20) {
-        setHiddenInput('');
-      }
-    };
 
-    window.addEventListener('keydown', handleKeyPress);
-    return () => window.removeEventListener('keydown', handleKeyPress);
-  }, [hiddenInput]);
 
-  // Enhanced code verification
-  const handleCodeSubmit = () => {
-    setCodeError('');
-    setAuthStep('verifying');
-    
-    // Simulate verification delay
-    setTimeout(() => {
-      const validCodes = ['chak', 'remi'];
-      
-      if (validCodes.includes(secretCode.toLowerCase())) {
-        setShowFingerprint(true);
-        setAuthStep('input');
-      } else {
-        setAuthStep('denied');
-        setCodeError('Access Denied: Invalid credentials');
-        setTimeout(() => {
-          setShowAdminPortal(false);
-          setAuthStep('input');
-          setSecretCode('');
-          setCodeError('');
-        }, 3000);
-      }
-    }, 2000);
-  };
-
-  // Biometric verification simulation
-  const handleBiometricVerification = () => {
-    setBiometricVerified(true);
-    setAuthStep('granted');
-    
-    setTimeout(() => {
-      setShowAdminPortal(false);
-      router.push('/superadmin');
-    }, 2500);
-  };
-
-  // Close modal handler
-  const handleCloseModal = () => {
-    setShowAdminPortal(false);
-    setSecretCode('');
-    setCodeError('');
-    setShowFingerprint(false);
-    setBiometricVerified(false);
-    setAuthStep('input');
-  };
 
   const prepEducationalContent = [
     {
@@ -133,7 +53,7 @@ export default function LandingPage() {
       description: "Pre-Exposure Prophylaxis - Your shield against HIV",
       details: [
         "Pre: Before exposure occurs",
-        "Exposure: Activities that may lead to HIV acquisition", 
+        "Exposure: Activities that may lead to HIV acquisition",
         "Prophylaxis: Medical prevention strategy",
         "Up to 99% effective when taken as prescribed"
       ],
@@ -219,7 +139,7 @@ export default function LandingPage() {
     },
     {
       icon: <SafetyIcon />,
-      title: "Violence Response Unit", 
+      title: "Violence Response Unit",
       description: "Immediate support for survivors with complete confidentiality guaranteed",
       details: ["Crisis intervention team", "Legal aid network", "Safe accommodation", "Trauma-informed counseling"],
       gradient: "from-purple-500 to-indigo-600",
@@ -259,7 +179,7 @@ export default function LandingPage() {
       icon: <Heart className="h-10 w-10" />,
       features: [
         "2-minute registration process",
-        "Choose from 50+ hospitals", 
+        "Choose from 50+ hospitals",
         "Free condoms & lubricants",
         "PrEP/PEP management suite",
         "Confidential violence support",
@@ -286,7 +206,7 @@ export default function LandingPage() {
       features: [
         "Unified patient records",
         "Cross-facility collaboration",
-        "Real-time analytics suite", 
+        "Real-time analytics suite",
         "Automated workflows",
         "HD consultation studio",
         "Resource optimization",
@@ -301,35 +221,35 @@ export default function LandingPage() {
       action: "Access Portal",
       path: "/auth/login",
       gradient: "from-emerald-600 to-teal-700",
-      color: "bg-gradient-to-br from-emerald-50/90 via-teal-50/50 to-white border-emerald-200/60", 
+      color: "bg-gradient-to-br from-emerald-50/90 via-teal-50/50 to-white border-emerald-200/60",
       buttonStyle: "bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-700 hover:to-teal-800 text-white shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
     }
   ];
 
   const stats = [
-    { 
-      number: "10,000+", 
-      label: "Active Users", 
+    {
+      number: "10,000+",
+      label: "Active Users",
       icon: <Users className="h-7 w-7" />,
-      gradient: "from-blue-500 to-indigo-600" 
+      gradient: "from-blue-500 to-indigo-600"
     },
-    { 
-      number: "50+", 
-      label: "Partner Facilities", 
+    {
+      number: "50+",
+      label: "Partner Facilities",
       icon: <Building2 className="h-7 w-7" />,
-      gradient: "from-emerald-500 to-teal-600" 
+      gradient: "from-emerald-500 to-teal-600"
     },
-    { 
-      number: "99%", 
-      label: "PrEP Efficacy", 
+    {
+      number: "99%",
+      label: "PrEP Efficacy",
       icon: <Award className="h-7 w-7" />,
-      gradient: "from-purple-500 to-pink-600" 
+      gradient: "from-purple-500 to-pink-600"
     },
-    { 
-      number: "24/7", 
-      label: "Support Available", 
+    {
+      number: "24/7",
+      label: "Support Available",
       icon: <HeartHandshake className="h-7 w-7" />,
-      gradient: "from-rose-500 to-orange-600" 
+      gradient: "from-rose-500 to-orange-600"
     }
   ];
 
@@ -340,316 +260,13 @@ export default function LandingPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 via-white to-gray-50">
       {/* Enhanced Executive Admin Portal Modal */}
-      {showAdminPortal && (
-        <div className="fixed inset-0 bg-black/80 backdrop-blur-2xl z-[100] flex items-center justify-center p-4 animate-in fade-in duration-500">
-          <div className="relative w-full max-w-lg">
-            {/* Animated background effects */}
-            <div className="absolute -inset-4 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 rounded-3xl blur-3xl opacity-30 animate-pulse"></div>
-            
-            <Card className="relative bg-black/90 backdrop-blur-3xl shadow-2xl border border-white/10 overflow-hidden animate-in zoom-in-95 slide-in-from-bottom-3 duration-700">
-              {/* Animated grid background */}
-              <div className="absolute inset-0 opacity-10">
-                <div className="absolute inset-0" style={{
-                  backgroundImage: `linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)`,
-                  backgroundSize: '20px 20px'
-                }}></div>
-              </div>
 
-              {authStep === 'input' && !showFingerprint && (
-                <>
-                  <CardHeader className="text-center pb-8 pt-10 relative z-10">
-                    <div className="flex items-center justify-center mb-8">
-                      <div className="relative">
-                        <div className="absolute inset-0 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-2xl blur-2xl opacity-50 animate-pulse"></div>
-                        <div className="relative bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600 p-6 rounded-2xl shadow-2xl">
-                          <Terminal className="h-16 w-16 text-white" />
-                        </div>
-                      </div>
-                    </div>
-                    <CardTitle className="text-4xl font-bold text-white mb-3 tracking-wider">
-                      EXECUTIVE ACCESS
-                    </CardTitle>
-                    <CardDescription className="text-gray-400 text-lg font-light tracking-wide">
-                      Ultra-Secure Command Center Portal
-                    </CardDescription>
-                  </CardHeader>
-                  
-                  <CardContent className="space-y-6 p-8 relative z-10">
-                    {/* Security level indicator */}
-                    <div className="flex items-center justify-center space-x-6 mb-8">
-                      {['LEVEL 5', 'ENCRYPTED', 'MONITORED'].map((label, i) => (
-                        <div key={i} className="flex items-center space-x-2">
-                          <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                          <span className="text-xs text-gray-500 font-mono">{label}</span>
-                        </div>
-                      ))}
-                    </div>
-
-                    {/* Warning banner */}
-                    <div className="relative overflow-hidden bg-gradient-to-r from-red-900/20 to-orange-900/20 rounded-2xl p-5 border border-red-500/30">
-                      <div className="absolute top-0 right-0 w-32 h-32 bg-red-500/10 rounded-full blur-3xl"></div>
-                      <div className="relative flex items-center justify-center space-x-3 text-red-400 mb-3">
-                        <ShieldCheck className="h-6 w-6" />
-                        <span className="font-bold text-sm tracking-wider">RESTRICTED ACCESS</span>
-                      </div>
-                      <p className="text-xs text-red-300/80 text-center leading-relaxed font-light">
-                        This area is protected by advanced security protocols. 
-                        All access attempts are logged and monitored in real-time.
-                      </p>
-                    </div>
-                    
-                    {/* Code input */}
-                    <div className="space-y-4">
-                      <label className="text-sm font-semibold text-gray-400 flex items-center tracking-wider">
-                        <Fingerprint className="h-4 w-4 mr-2 text-indigo-400" />
-                        AUTHORIZATION CODE
-                      </label>
-                      <div className="relative group">
-                        <div className="absolute inset-0 bg-gradient-to-r from-indigo-600/20 to-purple-600/20 rounded-xl blur-md group-hover:blur-lg transition-all"></div>
-                        <input
-                          type="password"
-                          value={secretCode}
-                          onChange={(e) => setSecretCode(e.target.value)}
-                          onKeyPress={(e) => e.key === 'Enter' && secretCode && handleCodeSubmit()}
-                          placeholder="Enter executive access code"
-                          className="relative w-full h-16 px-6 bg-black/50 border-2 border-indigo-500/30 rounded-xl focus:ring-4 focus:ring-indigo-500/20 focus:border-indigo-500/50 transition-all duration-300 text-lg font-mono text-white placeholder:text-gray-600 tracking-wider"
-                          autoFocus
-                          autoComplete="off"
-                          spellCheck="false"
-                        />
-                        <div className="absolute right-6 top-1/2 -translate-y-1/2 text-indigo-400">
-                          <Binary className="h-6 w-6" />
-                        </div>
-                      </div>
-                      {codeError && (
-                        <div className="flex items-center space-x-2 text-red-400 bg-red-900/20 px-4 py-3 rounded-lg animate-in slide-in-from-top-1">
-                          <AlertTriangle className="h-4 w-4" />
-                          <p className="text-sm font-medium">{codeError}</p>
-                        </div>
-                      )}
-                    </div>
-                    
-                    {/* Action buttons */}
-                    <div className="flex gap-4 pt-4">
-                      <Button 
-                        onClick={handleCodeSubmit}
-                        className="flex-1 h-14 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-bold text-lg shadow-2xl hover:shadow-indigo-500/50 transform hover:-translate-y-0.5 transition-all duration-300 tracking-wider"
-                        disabled={!secretCode}
-                      >
-                        <Command className="mr-3 h-5 w-5" />
-                        AUTHENTICATE
-                      </Button>
-                      <Button 
-                        variant="outline"
-                        onClick={handleCloseModal}
-                        className="h-14 px-6 border-2 border-gray-700 bg-black/50 text-gray-400 hover:bg-gray-900/50 hover:border-gray-600 hover:text-white font-bold transition-all duration-300"
-                      >
-                        <X className="h-5 w-5" />
-                      </Button>
-                    </div>
-                  </CardContent>
-                  
-                  {/* Footer with security info */}
-                  <div className="px-8 pb-6 relative z-10">
-                    <div className="text-center pt-4 border-t border-gray-800">
-                      <div className="flex items-center justify-center space-x-6 text-xs text-gray-600 font-mono">
-                        <span className="flex items-center">
-                          <Lock className="h-3 w-3 mr-1" />
-                          AES-256
-                        </span>
-                        <span className="flex items-center">
-                          <Cpu className="h-3 w-3 mr-1" />
-                          QUANTUM-SAFE
-                        </span>
-                        <span className="flex items-center">
-                          <Shield className="h-3 w-3 mr-1" />
-                          ISO-27001
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </>
-              )}
-
-              {/* Biometric verification screen */}
-              {showFingerprint && !biometricVerified && (
-                <>
-                  <CardHeader className="text-center pb-8 pt-10 relative z-10">
-                    <CardTitle className="text-3xl font-bold text-white mb-3">
-                      BIOMETRIC VERIFICATION
-                    </CardTitle>
-                    <CardDescription className="text-gray-400 text-lg">
-                      Secondary authentication required
-                    </CardDescription>
-                  </CardHeader>
-                  
-                  <CardContent className="space-y-8 p-8 relative z-10">
-                    <div className="flex justify-center">
-                      <div 
-                        className="relative cursor-pointer group"
-                        onClick={handleBiometricVerification}
-                      >
-                        <div className="absolute inset-0 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full blur-2xl opacity-30 group-hover:opacity-50 animate-pulse"></div>
-                        <div className="relative bg-gradient-to-br from-gray-900 to-black p-12 rounded-full border-4 border-green-500/30 group-hover:border-green-500/50 transition-all duration-500">
-                          <Fingerprint className="h-32 w-32 text-green-500 group-hover:scale-110 transition-transform" />
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <div className="text-center space-y-3">
-                      <p className="text-gray-400 font-light">Place your finger on the scanner</p>
-                      <p className="text-xs text-gray-600 font-mono">CLICK TO SIMULATE SCAN</p>
-                    </div>
-                    
-                    <div className="grid grid-cols-3 gap-4 pt-4">
-                      {['IRIS SCAN', 'VOICE PRINT', 'DNA MATCH'].map((method, i) => (
-                        <div key={i} className="text-center p-3 bg-gray-900/50 rounded-lg border border-gray-800">
-                          <div className="text-xs text-gray-500 font-mono">{method}</div>
-                          <div className="text-xs text-gray-700 mt-1">STANDBY</div>
-                        </div>
-                      ))}
-                    </div>
-                  </CardContent>
-                </>
-              )}
-
-              {/* Verifying state */}
-              {authStep === 'verifying' && (
-                <CardContent className="py-24 relative z-10">
-                  <div className="text-center space-y-8">
-                    <div className="flex justify-center">
-                      <div className="relative">
-                        <Loader2 className="h-16 w-16 text-indigo-500 animate-spin" />
-                        <div className="absolute inset-0 h-16 w-16 rounded-full bg-indigo-500/30 animate-ping"></div>
-                      </div>
-                    </div>
-                    <div className="space-y-3">
-                      <p className="text-2xl font-bold text-white">VERIFYING CREDENTIALS</p>
-                      <p className="text-gray-400 font-light">Establishing secure connection...</p>
-                    </div>
-                    <div className="flex justify-center space-x-2">
-                      {[...Array(5)].map((_, i) => (
-                        <div 
-                          key={i} 
-                          className="w-2 h-2 bg-indigo-500 rounded-full animate-pulse"
-                          style={{ animationDelay: `${i * 0.2}s` }}
-                        ></div>
-                      ))}
-                    </div>
-                  </div>
-                </CardContent>
-              )}
-
-              {/* Access granted state */}
-              {authStep === 'granted' && (
-                <>
-                  <CardHeader className="text-center pb-8 pt-10 relative z-10">
-                    <div className="flex items-center justify-center mb-6">
-                      <div className="relative">
-                        <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-green-600 rounded-full blur-2xl opacity-50 animate-pulse"></div>
-                        <div className="relative bg-gradient-to-br from-emerald-500 to-green-600 p-6 rounded-full shadow-2xl">
-                          <CheckCircle className="h-16 w-16 text-white animate-in zoom-in duration-700" />
-                        </div>
-                      </div>
-                    </div>
-                    <CardTitle className="text-4xl font-bold text-emerald-400 animate-in fade-in duration-700">
-                      ACCESS GRANTED
-                    </CardTitle>
-                    <CardDescription className="text-emerald-300 text-lg mt-3 animate-in fade-in slide-in-from-bottom-2 duration-1000">
-                      Welcome to Executive Command
-                    </CardDescription>
-                  </CardHeader>
-                  
-                  <CardContent className="p-8 relative z-10">
-                    <div className="text-center space-y-6">
-                      <div className="bg-gradient-to-r from-emerald-900/30 to-green-900/30 rounded-2xl p-6 border border-emerald-500/30 animate-in slide-in-from-bottom duration-700">
-                        <div className="flex items-center justify-center space-x-3 text-emerald-400 mb-3">
-                          <ShieldCheck className="h-6 w-6" />
-                          <span className="font-bold text-lg tracking-wider">AUTHENTICATION COMPLETE</span>
-                        </div>
-                        <p className="text-sm text-emerald-300/80 leading-relaxed">
-                          Full system access granted. Initializing executive dashboard...
-                        </p>
-                      </div>
-                      
-                      <div className="flex items-center justify-center space-x-3 text-emerald-400">
-                        <Boxes className="h-6 w-6 animate-spin" />
-                        <span className="text-base font-medium">Loading Executive Interface...</span>
-                      </div>
-                      
-                      <div className="pt-2">
-                        <div className="h-3 bg-gray-800 rounded-full overflow-hidden">
-                          <div className="h-full bg-gradient-to-r from-emerald-500 to-green-600 animate-progress rounded-full"></div>
-                        </div>
-                      </div>
-                    </div>
-                  </CardContent>
-                </>
-              )}
-
-              {/* Access denied state */}
-              {authStep === 'denied' && (
-                <>
-                  <CardHeader className="text-center pb-8 pt-10 relative z-10">
-                    <div className="flex items-center justify-center mb-6">
-                      <div className="relative">
-                        <div className="absolute inset-0 bg-gradient-to-r from-red-500 to-rose-600 rounded-full blur-2xl opacity-50"></div>
-                        <div className="relative bg-gradient-to-br from-red-500 to-rose-600 p-6 rounded-full shadow-2xl animate-shake">
-                          <X className="h-16 w-16 text-white" />
-                        </div>
-                      </div>
-                    </div>
-                    <CardTitle className="text-4xl font-bold text-red-400">
-                      ACCESS DENIED
-                    </CardTitle>
-                    <CardDescription className="text-red-300 text-lg mt-3">
-                      Authentication failed
-                    </CardDescription>
-                  </CardHeader>
-                  
-                  <CardContent className="p-8 relative z-10">
-                    <div className="text-center space-y-6">
-                      <div className="bg-gradient-to-r from-red-900/30 to-rose-900/30 rounded-2xl p-6 border border-red-500/30 animate-in slide-in-from-bottom duration-700">
-                        <div className="flex items-center justify-center space-x-3 text-red-400 mb-3">
-                          <AlertTriangle className="h-6 w-6" />
-                          <span className="font-bold text-lg">SECURITY ALERT</span>
-                        </div>
-                        <p className="text-sm text-red-300/80 leading-relaxed">
-                          Invalid credentials. This incident has been logged and reported.
-                        </p>
-                      </div>
-                      
-                      <div className="bg-black/50 rounded-lg p-4 border border-red-900/50 font-mono text-xs">
-                        <p className="text-red-400">
-                          SESSION: {Math.random().toString(36).substr(2, 9).toUpperCase()}
-                        </p>
-                        <p className="text-red-400">
-                          TIME: {new Date().toISOString()}
-                        </p>
-                        <p className="text-red-400">
-                          STATUS: UNAUTHORIZED ACCESS ATTEMPT
-                        </p>
-                      </div>
-                      
-                      <div className="flex items-center justify-center space-x-2 text-red-400">
-                        <Clock className="h-5 w-5 animate-pulse" />
-                        <span className="text-sm font-medium">Auto-closing in 3 seconds...</span>
-                      </div>
-                    </div>
-                  </CardContent>
-                </>
-              )}
-            </Card>
-          </div>
-        </div>
-      )}
 
       {/* Enhanced Professional Header */}
-      <header className={`fixed top-0 left-0 right-0 z-40 transition-all duration-500 ${
-        scrolled 
-          ? 'bg-white/95 backdrop-blur-xl shadow-lg border-b border-gray-100' 
-          : 'bg-white/80 backdrop-blur-md'
-      }`}>
+      <header className={`fixed top-0 left-0 right-0 z-40 transition-all duration-500 ${scrolled
+        ? 'bg-white/95 backdrop-blur-xl shadow-lg border-b border-gray-100'
+        : 'bg-white/80 backdrop-blur-md'
+        }`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-20">
             <div className="flex items-center space-x-4">
@@ -666,20 +283,20 @@ export default function LandingPage() {
                 <p className="text-xs text-gray-500 font-medium">Comprehensive HIV Prevention</p>
               </div>
             </div>
-            
+
             {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center space-x-3">
-              <Button 
-                variant="ghost" 
-                className="text-gray-700 hover:text-gray-900 hover:bg-gray-100/80 font-medium" 
+              <Button
+                variant="ghost"
+                className="text-gray-700 hover:text-gray-900 hover:bg-gray-100/80 font-medium"
                 onClick={() => handleNavigation('/auth/login')}
               >
                 <LogIn className="mr-2 h-4 w-4" />
                 Staff Portal
               </Button>
-              <Button 
-                className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 font-semibold" 
-                onClick={() => handleNavigation('/patient-register')}
+              <Button
+                className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 font-semibold"
+                onClick={() => handleNavigation('/profile')}
               >
                 <UserPlus className="mr-2 h-4 w-4" />
                 Get Started Free
@@ -703,9 +320,9 @@ export default function LandingPage() {
           {mobileMenuOpen && (
             <div className="md:hidden py-4 border-t border-gray-100 bg-white/95 backdrop-blur-xl animate-in slide-in-from-top-2">
               <div className="flex flex-col space-y-2 px-2">
-                <Button 
-                  variant="ghost" 
-                  className="justify-start text-gray-700 hover:bg-gray-100 font-medium" 
+                {/* <Button
+                  variant="ghost"
+                  className="justify-start text-gray-700 hover:bg-gray-100 font-medium"
                   onClick={() => {
                     handleNavigation('/auth/login');
                     setMobileMenuOpen(false);
@@ -713,9 +330,9 @@ export default function LandingPage() {
                 >
                   <LogIn className="mr-2 h-4 w-4" />
                   Staff Portal
-                </Button>
-                <Button 
-                  className="justify-start bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold" 
+                </Button> */}
+                <Button
+                  className="justify-start bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold"
                   onClick={() => {
                     handleNavigation('/patient-register');
                     setMobileMenuOpen(false);
@@ -755,7 +372,7 @@ export default function LandingPage() {
               Instant Access
             </Badge>
           </div>
-          
+
           <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold text-gray-900 mb-8 leading-tight animate-in fade-in slide-in-from-bottom-4 duration-1000">
             Revolutionary
             <span className="block mt-2 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent animate-gradient">
@@ -765,9 +382,9 @@ export default function LandingPage() {
               & Wellness Platform
             </span>
           </h1>
-          
+
           <p className="text-xl md:text-2xl lg:text-3xl text-gray-600 mb-14 max-w-4xl mx-auto leading-relaxed animate-in fade-in slide-in-from-bottom-4 duration-1000 animation-delay-200">
-            Complete care ecosystem connecting <span className="font-semibold text-gray-800">10,000+ patients</span> with 
+            Complete care ecosystem connecting <span className="font-semibold text-gray-800">10,000+ patients</span> with
             <span className="font-semibold text-gray-800"> healthcare heroes</span> through cutting-edge technology
           </p>
 
@@ -786,27 +403,27 @@ export default function LandingPage() {
               </div>
             ))}
           </div>
-          
+
           {/* CTA Buttons with enhanced styling */}
           <div className="flex flex-col sm:flex-row gap-4 md:gap-6 justify-center animate-in fade-in slide-in-from-bottom-4 duration-1000 animation-delay-600">
-            <Button 
-              size="lg" 
-              className="text-lg px-10 md:px-14 py-7 md:py-8 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-xl hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 font-semibold group" 
+            <Button
+              size="lg"
+              className="text-lg px-10 md:px-14 py-7 md:py-8 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-xl hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 font-semibold group"
               onClick={() => handleNavigation('/patient-register')}
             >
               <UserPlus className="mr-3 h-6 w-6 group-hover:rotate-12 transition-transform" />
               Start Free Registration
               <ArrowRight className="ml-3 h-5 w-5 group-hover:translate-x-1 transition-transform" />
             </Button>
-            <Button 
-              size="lg" 
-              variant="outline" 
-              className="text-lg px-10 md:px-14 py-7 md:py-8 border-2 border-gray-300 hover:border-gray-400 hover:bg-gray-50 font-semibold group" 
+            {/* <Button
+              size="lg"
+              variant="outline"
+              className="text-lg px-10 md:px-14 py-7 md:py-8 border-2 border-gray-300 hover:border-gray-400 hover:bg-gray-50 font-semibold group"
               onClick={() => handleNavigation('/auth/login')}
             >
               <Stethoscope className="mr-3 h-6 w-6 group-hover:rotate-12 transition-transform" />
               Healthcare Staff Login
-            </Button>
+            </Button> */}
           </div>
         </div>
       </section>
@@ -825,17 +442,17 @@ export default function LandingPage() {
               PrEP Education Center
             </h2>
             <p className="text-xl md:text-2xl lg:text-3xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
-              <span className="font-semibold text-blue-600">Power</span> • 
-              <span className="font-semibold text-purple-600"> Protection</span> • 
+              <span className="font-semibold text-blue-600">Power</span> •
+              <span className="font-semibold text-purple-600"> Protection</span> •
               <span className="font-semibold text-pink-600"> Peace of Mind</span>
             </p>
             <p className="text-lg text-gray-500 mt-4 font-medium">Empowering everyone with knowledge for prevention</p>
           </div>
-          
+
           <div className="grid lg:grid-cols-2 xl:grid-cols-3 gap-6 max-w-7xl mx-auto">
             {prepEducationalContent.map((section, index) => (
-              <Card 
-                key={index} 
+              <Card
+                key={index}
                 className={`group ${section.color} border-2 transition-all duration-500 shadow-lg hover:shadow-2xl transform hover:-translate-y-2 cursor-pointer overflow-hidden`}
                 onClick={() => setActivePrEPSection(activePrEPSection === index ? null : index)}
               >
@@ -888,18 +505,18 @@ export default function LandingPage() {
                   Join the movement. Be part of the generation that ends HIV.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <Button 
-                    size="lg" 
-                    className="text-lg px-10 py-7 bg-white text-blue-600 hover:bg-gray-100 shadow-xl hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 font-semibold group" 
+                  <Button
+                    size="lg"
+                    className="text-lg px-10 py-7 bg-white text-blue-600 hover:bg-gray-100 shadow-xl hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 font-semibold group"
                     onClick={() => handleNavigation('/patient-register')}
                   >
                     <Pill className="mr-3 h-5 w-5 group-hover:rotate-12 transition-transform" />
                     Start PrEP Today
                   </Button>
-                  <Button 
-                    size="lg" 
+                  <Button
+                    size="lg"
                     variant="outline"
-                    className="text-lg px-10 py-7 border-2 border-white text-white hover:bg-white/10 backdrop-blur-sm font-semibold group" 
+                    className="text-lg px-10 py-7 border-2 border-white text-white hover:bg-white/10 backdrop-blur-sm font-semibold group"
                     onClick={() => handleNavigation('/about')}
                   >
                     <BookOpen className="mr-3 h-5 w-5 group-hover:rotate-12 transition-transform" />
@@ -940,14 +557,14 @@ export default function LandingPage() {
                   <div className="relative group">
                     <div className="absolute inset-0 bg-white rounded-2xl shadow-md group-hover:shadow-lg transition-all duration-300"></div>
                     <div className="relative bg-white rounded-2xl p-8 border border-gray-100 group-hover:border-gray-200 transition-all duration-300 h-32 w-64 flex items-center justify-center overflow-hidden">
-                      <img 
-                        src="https://raw.githubusercontent.com/Remisteve/prep-software/refs/heads/main/public/chap.png" 
+                      <img
+                        src="https://raw.githubusercontent.com/Remisteve/prep-software/refs/heads/main/public/chap.png"
                         alt="CHAP Stawisha Logo"
                         className="max-w-full max-h-16 object-contain filter group-hover:scale-105 transition-all duration-300"
                       />
                     </div>
                   </div>
-                  
+
                   {/* Partner info */}
                   <div className="flex-1 text-center md:text-left">
                     <CardTitle className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
@@ -960,7 +577,7 @@ export default function LandingPage() {
                   </div>
                 </div>
               </CardHeader>
-              
+
               <CardContent>
                 <div className="grid md:grid-cols-2 gap-8 mb-8">
                   {/* About CHAK */}
@@ -1037,7 +654,7 @@ export default function LandingPage() {
                 <p className="text-xl md:text-2xl opacity-95 max-w-3xl mx-auto mb-10">
                   Together with CHAP Stawisha, we're expanding HIV prevention services nationwide
                 </p>
-                
+
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
                   {[
                     { number: "15", label: "Counties Covered", icon: <MapPin className="h-8 w-8" /> },
@@ -1073,7 +690,7 @@ export default function LandingPage() {
               Two powerful platforms, one unified mission to transform healthcare
             </p>
           </div>
-          
+
           <div className="grid lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
             {userTypes.map((type, index) => (
               <div key={index} className="group relative">
@@ -1113,7 +730,7 @@ export default function LandingPage() {
                         </li>
                       ))}
                     </ul>
-                    <Button 
+                    <Button
                       className={`w-full ${type.buttonStyle} py-7 md:py-8 text-lg font-bold group/btn`}
                       onClick={() => handleNavigation(type.path)}
                     >
@@ -1125,15 +742,15 @@ export default function LandingPage() {
               </div>
             ))}
           </div>
-          
+
           <div className="text-center mt-16 bg-gradient-to-r from-blue-50 via-purple-50 to-pink-50 rounded-3xl p-10 border-2 border-gray-200 max-w-4xl mx-auto">
             <div className="flex items-center justify-center mb-4">
               <Info className="h-8 w-8 text-blue-600 mr-3" />
               <h3 className="text-xl font-bold text-gray-900">Important Note for Healthcare Staff</h3>
             </div>
             <p className="text-lg text-gray-700 leading-relaxed">
-              Your account is created by system administrators. 
-              <span className="font-semibold"> Doctors can register patients directly</span> from their dashboard. 
+              Your account is created by system administrators.
+              <span className="font-semibold"> Doctors can register patients directly</span> from their dashboard.
               Contact your facility admin for login credentials.
             </p>
           </div>
@@ -1151,11 +768,11 @@ export default function LandingPage() {
               Everything you need for complete HIV prevention and holistic wellness in one integrated platform
             </p>
           </div>
-          
+
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {features.map((feature, index) => (
-              <Card 
-                key={index} 
+              <Card
+                key={index}
                 className={`group ${feature.color} border-2 transition-all duration-500 shadow-lg hover:shadow-2xl transform hover:-translate-y-2 cursor-pointer overflow-hidden`}
                 onClick={() => setActiveFeature(activeFeature === index ? null : index)}
               >
@@ -1208,7 +825,7 @@ export default function LandingPage() {
               Confidential, compassionate support for survivors of all forms of violence
             </p>
           </div>
-          
+
           <div className="grid md:grid-cols-3 gap-8 mb-16">
             {[
               {
@@ -1251,11 +868,11 @@ export default function LandingPage() {
               </Card>
             ))}
           </div>
-          
+
           <div className="text-center">
-            <Button 
-              size="lg" 
-              className="text-lg px-12 py-8 bg-white text-purple-600 hover:bg-gray-100 shadow-2xl hover:shadow-3xl transform hover:-translate-y-1 transition-all duration-300 font-bold group" 
+            <Button
+              size="lg"
+              className="text-lg px-12 py-8 bg-white text-purple-600 hover:bg-gray-100 shadow-2xl hover:shadow-3xl transform hover:-translate-y-1 transition-all duration-300 font-bold group"
               onClick={() => handleNavigation('/contact')}
             >
               <HeartHandshake className="mr-3 h-6 w-6 group-hover:scale-110 transition-transform" />
@@ -1274,7 +891,7 @@ export default function LandingPage() {
           <div className="absolute top-0 left-0 w-96 h-96 bg-white/10 rounded-full blur-3xl animate-float"></div>
           <div className="absolute bottom-0 right-0 w-128 h-128 bg-purple-500/20 rounded-full blur-3xl animate-float animation-delay-2000"></div>
         </div>
-        
+
         <div className="max-w-5xl mx-auto text-center relative z-10">
           <div className="relative inline-block mb-12">
             <div className="absolute inset-0 bg-white/20 rounded-full blur-2xl animate-pulse"></div>
@@ -1282,40 +899,40 @@ export default function LandingPage() {
               <Heart className="h-20 w-20 text-white" />
             </div>
           </div>
-          
+
           <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-8 leading-tight">
             Your Health Journey
             <span className="block text-3xl md:text-4xl lg:text-5xl mt-4 text-white/90">
               Starts With One Click
             </span>
           </h2>
-          
+
           <p className="text-xl md:text-2xl lg:text-3xl mb-14 text-white/90 leading-relaxed max-w-4xl mx-auto">
-            Join thousands taking control of their health with comprehensive HIV prevention, 
+            Join thousands taking control of their health with comprehensive HIV prevention,
             wellness support, and a caring community
           </p>
-          
+
           <div className="flex flex-col sm:flex-row gap-6 justify-center">
-            <Button 
-              size="lg" 
-              className="text-lg px-14 py-8 bg-white text-purple-600 hover:bg-gray-100 shadow-2xl hover:shadow-3xl transform hover:-translate-y-1 transition-all duration-300 font-bold group" 
+            <Button
+              size="lg"
+              className="text-lg px-14 py-8 bg-white text-purple-600 hover:bg-gray-100 shadow-2xl hover:shadow-3xl transform hover:-translate-y-1 transition-all duration-300 font-bold group"
               onClick={() => handleNavigation('/patient-register')}
             >
               <Sparkles className="mr-3 h-6 w-6 group-hover:rotate-12 transition-transform" />
               Start Free Registration
               <ArrowRight className="ml-3 h-5 w-5 group-hover:translate-x-2 transition-transform" />
             </Button>
-            <Button 
-              size="lg" 
+            <Button
+              size="lg"
               variant="outline"
-              className="text-lg px-14 py-8 border-2 border-white text-white hover:bg-white/10 backdrop-blur-sm font-bold group" 
+              className="text-lg px-14 py-8 border-2 border-white text-white hover:bg-white/10 backdrop-blur-sm font-bold group"
               onClick={() => handleNavigation('/about')}
             >
               <Info className="mr-3 h-6 w-6 group-hover:rotate-12 transition-transform" />
               Learn More
             </Button>
           </div>
-          
+
           <div className="mt-14 flex items-center justify-center space-x-8 text-white/80">
             <div className="flex items-center space-x-2">
               <Lock className="h-5 w-5" />
@@ -1356,7 +973,7 @@ export default function LandingPage() {
                 ))}
               </div>
             </div>
-            
+
             {/* Footer Links */}
             {[
               {
@@ -1426,12 +1043,12 @@ export default function LandingPage() {
               </div>
             ))}
           </div>
-          
+
           {/* Footer Bottom */}
           <div className="border-t border-gray-800 pt-10 mt-12">
             <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
               <p className="text-gray-400 text-center md:text-left">
-                © 2025 PrEP/PEP Care Platform. All rights reserved. 
+                © 2025 PrEP/PEP Care Platform. All rights reserved.
                 <span className="inline-flex items-center ml-2">
                   Made with <Heart className="h-4 w-4 text-red-500 mx-1" /> in Kenya
                 </span>

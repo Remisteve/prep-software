@@ -39,3 +39,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+.json*
+otz-system-firebase-adminsdk-fbsvc-afb6ae1ca3.json
+client_secret_433980513410-ui06rlee8jls3kn2o5vf82498b8a7moe.apps.googleusercontent.com.json
