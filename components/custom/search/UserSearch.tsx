@@ -1,31 +1,30 @@
 'use client'
 
-import { Button } from '@/components/ui/button';
+import { Patient } from '@/app/admin/lab/add/page';
 import { Input } from '@/components/ui/input';
 import { File, Loader2, Search, X } from 'lucide-react';
 import React, { useState, useEffect, useCallback, Dispatch, SetStateAction } from 'react';
 
-const UserSearch = ({ setUser, handleSelect }: {
+const UserSearch = ({ setUser }: {
     setUser: Dispatch<SetStateAction<any>>
-    handleSelect: (user: any) => void
 }) => {
     const [searchTerm, setSearchTerm] = useState('');
-    const [users, setUsers] = useState([]);
+    const [users, setUsers] = useState<Patient[]>([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const [showResults, setShowResults] = useState(false);
 
     // Debounce function to avoid too many API calls
-    const debounce = (func, delay) => {
-        let timeoutId;
-        return (...args) => {
+    const debounce = <T extends (...args: any[]) => void>(func: T, delay: number) => {
+        let timeoutId: ReturnType<typeof setTimeout>;
+        return (...args: Parameters<T>) => {
             clearTimeout(timeoutId);
-            timeoutId = setTimeout(() => func.apply(null, args), delay);
+            timeoutId = setTimeout(() => func(...args), delay);
         };
     };
 
     // Search function
-    const searchUsers = async (query) => {
+    const searchUsers = async (query: string) => {
         if (!query || query.trim().length < 2) {
             setUsers([]);
             setShowResults(false);
@@ -46,7 +45,7 @@ const UserSearch = ({ setUser, handleSelect }: {
             setUsers(data);
             setShowResults(true);
         } catch (err) {
-            setError(err.message);
+            setError(err instanceof Error ? err.message : 'An unknown error occurred');
             setUsers([]);
         } finally {
             setLoading(false);
@@ -60,15 +59,15 @@ const UserSearch = ({ setUser, handleSelect }: {
     );
 
     // Handle input change
-    const handleInputChange = (e) => {
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
         setSearchTerm(value);
         debouncedSearch(value);
     };
 
     // Handle clicking on a user
-    const handleUserClick = (user) => {
-        setSearchTerm(user.name || user.email);
+    const handleUserClick = (user: Patient) => {
+        setSearchTerm(user.name || user.email || '');
         setUser(user)
         setShowResults(false);
     };
@@ -83,8 +82,8 @@ const UserSearch = ({ setUser, handleSelect }: {
 
     // Handle clicking outside to close results
     useEffect(() => {
-        const handleClickOutside = (event) => {
-            if (!event.target.closest('.search-container')) {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (!(event.target as HTMLElement).closest('.search-container')) {
                 setShowResults(false);
             }
         };
@@ -180,7 +179,7 @@ const UserSearch = ({ setUser, handleSelect }: {
                                                         <img
                                                             className="h-10 w-10 rounded-full object-cover"
                                                             src={user.image || user.photoURL}
-                                                            alt={user.name || user.email}
+                                                            alt={user.name || user.email || ''}
                                                         />
                                                     ) : (
                                                         <div className="h-10 w-10 rounded-full bg-teal-100 flex items-center justify-center">
@@ -199,16 +198,7 @@ const UserSearch = ({ setUser, handleSelect }: {
                                                     <div className="text-sm text-slate-500">
                                                         {user.email}
                                                     </div>
-                                                    {user.role && (
-                                                        <div className="mt-1">
-                                                            <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${user.role === 'admin'
-                                                                ? 'bg-purple-100 text-purple-800'
-                                                                : 'bg-green-100 text-green-800'
-                                                                }`}>
-                                                                {user.role}
-                                                            </span>
-                                                        </div>
-                                                    )}
+
                                                 </div>
                                             </div>
 

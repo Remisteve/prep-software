@@ -15,7 +15,6 @@ import {
     ChevronRight,
     Eye,
     Download,
-    Flag,
     X
 } from 'lucide-react';
 import { LabInterface } from '@/app/admin/page';
@@ -182,9 +181,7 @@ const Lab2 = ({ labResults }: { labResults: LabInterface[] }) => {
                                                     <div className="ml-4">
                                                         <div className="text-sm font-medium text-slate-900 flex items-center">
                                                             {lab.Patient?.name}
-                                                            {lab.flagged && <Flag className="w-4 h-4 text-red-500 ml-2" />}
                                                         </div>
-                                                        <div className="text-sm text-slate-500">{lab?.Patient?.id}</div>
                                                     </div>
                                                 </div>
                                             </td>

@@ -69,10 +69,17 @@ const commonTests: TestOption[] = [
 // Patient type for selection
 export interface Patient {
     id: string;
-    name: string;
-    email?: string;
-    image?: string;
+    name?: string | null;
+    email?: string | null;
+    image?: string | null;
     photoURL?: string;
+}
+
+export interface Errors {
+    patient?: string;
+    testName?: string;
+    date?: string;
+    resultDate?: string;
 }
 
 const LabTestForm = () => {
@@ -91,12 +98,6 @@ const LabTestForm = () => {
     const [user, setUser] = useState<Patient | undefined>();
 
     // UI state
-    interface Errors {
-        patient?: string;
-        testName?: string;
-        date?: string;
-        resultDate?: string;
-    }
     const [errors, setErrors] = useState<Errors>({});
     const [isLoading, setIsLoading] = useState(false);
     const [showSuccess, setShowSuccess] = useState(false);
@@ -108,7 +109,6 @@ const LabTestForm = () => {
         { id: 2, title: 'Test Details', icon: FileText },
     ];
 
-    console.log(selectedPatient, 'selectedP')
 
     const inputValues: LabInterface = useMemo(() => ({
         patientID: user?.id || '',
@@ -177,13 +177,6 @@ const LabTestForm = () => {
         setCurrentStep(1);
     };
 
-    const handlePatientSelect = (patient: Patient) => {
-        setSelectedPatient(patient);
-        setErrors(prev => ({ ...prev, patient: '' }));
-        if (currentStep === 1) {
-            setCurrentStep(2);
-        }
-    };
 
 
     const isStepComplete = (step: number) => {
@@ -298,7 +291,7 @@ const LabTestForm = () => {
                                     <h2 className="text-xl font-semibold text-slate-900">Select Patient</h2>
                                 </div>
 
-                                <UserSearch setUser={setUser} handleSelect={handlePatientSelect} />
+                                <UserSearch setUser={setUser} />
 
                                 {selectedPatient && (
                                     <div className="mt-4 p-4 bg-blue-50 rounded-lg border border-blue-200">
@@ -308,7 +301,7 @@ const LabTestForm = () => {
                                                     <img
                                                         className="h-12 w-12 rounded-full object-cover"
                                                         src={selectedPatient.image || selectedPatient.photoURL}
-                                                        alt={selectedPatient.name}
+                                                        alt={selectedPatient.name || 'img'}
                                                     />
                                                 ) : (
                                                     <div className="h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center">
