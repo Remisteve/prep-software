@@ -23,6 +23,8 @@ import UsersList from '@/components/custom/Users';
 import Lab2 from '@/components/custom/Tabs/Lab2';
 import { Patient } from './lab/add/page';
 import AdminMedication, { MedicationInterface } from '@/components/custom/Tabs/AdminMedication';
+import AdminAppointments from '@/components/custom/Tabs/AdminAppointments';
+import { medicationData } from '@/data';
 
 export interface InventoryInterface {
     id: string,
@@ -52,120 +54,6 @@ export interface LabInterface {
     flagged: boolean
 }
 
-export const getStatusColor = (status: string) => {
-    switch (status) {
-        case 'active':
-        case 'completed':
-        case 'confirmed':
-        case 'in_stock':
-            return 'bg-green-100 text-green-800';
-        case 'pending':
-        case 'processing':
-        case 'low_stock':
-            return 'bg-yellow-100 text-yellow-800';
-        case 'inactive':
-        case 'flagged':
-        case 'urgent':
-        case 'critical_low':
-            return 'bg-red-100 text-red-800';
-        case 'pending_review':
-            return 'bg-teal-100 text-teal-800';
-        default:
-            return 'bg-gray-100 text-gray-800';
-    }
-};
-
-// Sample medication data list
-export const medicationData: MedicationInterface[] = [
-    {
-        id: "MED001",
-        frequency: "Once daily",
-        date: "2025-06-15",
-        Doctor: {
-            id: "DOC001",
-            name: "Dr. Sarah Johnson",
-            email: ''
-        },
-        Patient: {
-            id: "PAT001",
-            name: "John Smith",
-            age: 45,
-            email: ''
-        },
-        medicineName: "Lisinopril",
-        dosage: "10mg",
-        status: "Active",
-        createdAt: "2025-06-15T08:30:00Z",
-        nextFollowUp: "2025-07-15"
-    },
-    {
-        id: "MED002",
-        frequency: "Twice daily",
-        date: "2025-06-20",
-        Doctor: {
-            id: "DOC002",
-            name: "Dr. Michael Chen",
-            email: ''
-        },
-        Patient: {
-            id: "PAT002",
-            name: "Maria Garcia",
-            age: 52,
-            email: ''
-        },
-        medicineName: "Metformin",
-        dosage: "500mg",
-        status: "Active",
-        createdAt: "2025-06-20T10:15:00Z",
-        nextFollowUp: "2025-09-20"
-    },
-
-    {
-        id: "MED007",
-        frequency: "Once daily at bedtime",
-        date: "2025-06-22",
-        Doctor: {
-            id: "DOC007",
-            name: "Dr. Rachel Green",
-            email: ''
-        },
-        Patient: {
-            id: "PAT007",
-            name: "Christopher Lee",
-            age: 35,
-            email: ''
-        },
-        medicineName: "Gabapentin",
-        dosage: "300mg",
-        status: "Discontinued",
-        createdAt: "2025-06-22T13:15:00Z",
-        nextFollowUp: "2025-07-22"
-    },
-
-
-
-    {
-        id: "MED012",
-        frequency: "Once daily in morning",
-        date: "2025-06-21",
-        Doctor: {
-            id: "DOC011",
-            name: "Dr. Benjamin Harris",
-            email: ''
-        },
-        Patient: {
-            id: "PAT012",
-            name: "Karen Rodriguez",
-            age: 44,
-            email: ''
-        },
-        medicineName: "Naproxen",
-        dosage: "500mg",
-        status: "Active",
-        createdAt: "2025-06-21T11:45:00Z",
-        nextFollowUp: "2025-07-21"
-    }
-];
 
 
 
@@ -450,70 +338,7 @@ const AdminDashboard = () => {
                     )}
 
                     {activeTab === 'appointments' && (
-                        <div className="space-y-6">
-                            <div className="flex items-center justify-between">
-                                <h2 className="text-2xl font-bold text-gray-900">Appointment Requests</h2>
-                                <button className="bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-700 transition-colors flex items-center space-x-2">
-                                    <Plus className="h-4 w-4" />
-                                    <span>Schedule Appointment</span>
-                                </button>
-                            </div>
-
-                            {/* Appointments Table */}
-                            <div className="overflow-x-auto">
-                                <table className="min-w-full divide-y divide-gray-200">
-                                    <thead className="bg-gray-50">
-                                        <tr>
-                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Patient</th>
-                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Appointment Type</th>
-                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Preferred Date</th>
-                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Provider</th>
-                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody className="bg-white divide-y divide-gray-200">
-                                        {appointmentRequests.map((appointment) => (
-                                            <tr key={appointment.id} className={`hover:bg-gray-50 ${appointment.status === 'urgent' ? 'bg-red-50' : ''}`}>
-                                                <td className="px-6 py-4 whitespace-nowrap">
-                                                    <div>
-                                                        <div className="text-sm font-medium text-gray-900">{appointment.patientName}</div>
-                                                        <div className="text-sm text-gray-500">{appointment.patientId}</div>
-                                                    </div>
-                                                </td>
-                                                <td className="px-6 py-4 whitespace-nowrap">
-                                                    <div className="text-sm text-gray-900">{appointment.requestType}</div>
-                                                    <div className="text-sm text-gray-500">{appointment.priority}</div>
-                                                </td>
-                                                <td className="px-6 py-4 whitespace-nowrap">
-                                                    <div className="text-sm text-gray-900">{new Date(appointment.preferredDate).toLocaleDateString()}</div>
-                                                    <div className="text-sm text-gray-500">{appointment.preferredTime}</div>
-                                                </td>
-                                                <td className="px-6 py-4 whitespace-nowrap">
-                                                    <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(appointment.status)}`}>
-                                                        {appointment.status.toUpperCase()}
-                                                    </span>
-                                                </td>
-                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                                    {appointment.provider}
-                                                </td>
-                                                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
-                                                    <button className="text-green-600 hover:text-green-900">
-                                                        <CheckCircle className="h-4 w-4" />
-                                                    </button>
-                                                    <button className="text-teal-600 hover:text-teal-900">
-                                                        <Edit className="h-4 w-4" />
-                                                    </button>
-                                                    <button className="text-red-600 hover:text-red-900">
-                                                        <Trash2 className="h-4 w-4" />
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+                        <AdminAppointments />
                     )}
 
                     {activeTab === 'medication' && (

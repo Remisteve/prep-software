@@ -1,4 +1,5 @@
-import { getStatusColor } from '@/app/admin/page';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { Patient } from '@/app/admin/lab/add/page';
 import { Download, Edit, Eye, Search, Trash2 } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 
@@ -13,7 +14,7 @@ const getRiskLevelColor = (risk: string) => {
 };
 
 const UsersList = () => {
-    const [users, setUsers] = useState<UserInterface[]>()
+    const [users, setUsers] = useState<Patient[]>()
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedFilter, setSelectedFilter] = useState('all');
     const [isLoading, setIsLoading] = useState(true)
@@ -93,25 +94,25 @@ const UsersList = () => {
                                     <div>
                                         <div className="text-sm font-medium text-gray-900">{user?.name}</div>
                                         <div className="text-sm text-gray-500">{user?.email}</div>
-                                        <div className="text-sm text-gray-500">{user?.phone}</div>
+                                        {/* <div className="text-sm text-gray-500">{user?.phone}</div> */}
                                     </div>
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap">
-                                    <div className="text-sm text-gray-900">{user?.prepProgram}</div>
-                                    <div className="text-sm text-gray-500">{user?.provider}</div>
+                                    {/* <div className="text-sm text-gray-900">{user?.prepProgram}</div>
+                                    <div className="text-sm text-gray-500">{user?.provider}</div> */}
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap">
-                                    <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getRiskLevelColor(user?.riskLevel)}`}>
+                                    {/* <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getRiskLevelColor(user?.riskLevel)}`}>
                                         {user?.riskLevel?.toUpperCase()}
-                                    </span>
+                                    </span> */}
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap">
-                                    <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(user?.status)}`}>
-                                        {user?.status?.toUpperCase()}
-                                    </span>
+                                    {/* <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(user?.status)}`}> */}
+                                    {/* {user?.status?.toUpperCase()} */}
+                                    {/* </span> */}
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    {new Date(user?.lastActive).toLocaleDateString()}
+                                    {/* {new Date(user?.lastActive).toLocaleDateString()} */}
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
                                     <button className="text-blue-600 hover:text-blue-900">
