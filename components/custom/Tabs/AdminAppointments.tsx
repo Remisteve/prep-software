@@ -6,9 +6,6 @@ import {
     Plus,
     Filter,
     MoreVertical,
-    Edit,
-    Trash2,
-    Eye,
     Calendar,
     Clock,
     MapPin,
@@ -22,6 +19,7 @@ import {
     Phone,
     Video
 } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 export default function AdminAppointments() {
     const [searchTerm, setSearchTerm] = useState('');
@@ -189,6 +187,7 @@ export default function AdminAppointments() {
         const matchesFilter = selectedFilter === 'all' || appointment.status === selectedFilter;
         return matchesSearch && matchesFilter;
     });
+    const router = useRouter()
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50">
@@ -209,7 +208,9 @@ export default function AdminAppointments() {
                                 <RefreshCw className="w-4 h-4 mr-2" />
                                 Sync
                             </button>
-                            <button className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-2 rounded-xl font-semibold hover:from-blue-700 hover:to-indigo-700 transition-all flex items-center shadow-lg">
+                            <button
+                                onClick={() => router.push('/admin/appointments/add')}
+                                className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-2 rounded-xl font-semibold hover:from-blue-700 hover:to-indigo-700 transition-all flex items-center shadow-lg">
                                 <Plus className="w-4 h-4 mr-2" />
                                 New Appointment
                             </button>
@@ -385,20 +386,7 @@ export default function AdminAppointments() {
                                     </div>
                                 </div>
 
-                                {/* Action Buttons */}
-                                <div className="flex items-center space-x-2">
-                                    <button className="flex-1 bg-blue-50 text-blue-600 py-2 px-3 rounded-lg font-medium hover:bg-blue-100 transition-colors flex items-center justify-center">
-                                        <Eye className="w-4 h-4 mr-1" />
-                                        View
-                                    </button>
-                                    <button className="flex-1 bg-gray-50 text-gray-600 py-2 px-3 rounded-lg font-medium hover:bg-gray-100 transition-colors flex items-center justify-center">
-                                        <Edit className="w-4 h-4 mr-1" />
-                                        Edit
-                                    </button>
-                                    <button className="bg-red-50 text-red-600 py-2 px-3 rounded-lg font-medium hover:bg-red-100 transition-colors">
-                                        <Trash2 className="w-4 h-4" />
-                                    </button>
-                                </div>
+
                             </div>
                         </div>
                     ))}
