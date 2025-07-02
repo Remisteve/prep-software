@@ -27,7 +27,6 @@ const Lab2 = ({ labResults }: { labResults: LabInterface[] }) => {
     const [statusFilter, setStatusFilter] = useState('all');
     const [priorityFilter, setPriorityFilter] = useState('all');
 
-    console.log(labResults, 'labresuts')
 
     // Pagination logic
     // const totalPages = Math.ceil(filteredResults.length / itemsPerPage);

@@ -10,6 +10,23 @@ import { useSession } from 'next-auth/react'
 import React, { useMemo, useState } from 'react'
 import { Errors } from '../../lab/add/page'
 
+export interface AppointmentInterface {
+    id: string
+    agenda: string
+    date: string
+    patientID?: string
+    status: string
+    Patient?: Patient
+    priority: string
+    isVirtual: boolean
+    Doctor: {
+        id?: string
+        email?: string | null,
+        name?: string | null
+        image?: string | null
+    }
+}
+
 const AddAppointmentsPage = () => {
     const { data: session } = useSession()
     const [user, setUser] = useState<Patient>()
@@ -22,12 +39,15 @@ const AddAppointmentsPage = () => {
     const [apiError, setApiError] = useState('');
     const [currentStep, setCurrentStep] = useState(1);
 
-    const inputValues = useMemo(() => ({
+
+
+    const inputValues: AppointmentInterface = useMemo(() => ({
         date,
         agenda,
         patientID: user?.id,
         status: 'upcoming',
         priority: 'medium',
+        isVirtual: false,
         Doctor: {
             id: session?.user.id,
             email: session?.user.email,
@@ -35,7 +55,7 @@ const AddAppointmentsPage = () => {
             image: session?.user.image
 
         }
-    }), [date,])
+    }), [date, agenda, user?.id, session?.user.id, session?.user.email, session?.user.name, session?.user.image])
 
     const handleSubmit = async () => {
         // if (!validateForm()) {
@@ -46,7 +66,7 @@ const AddAppointmentsPage = () => {
             setIsLoading(true);
             setApiError('');
 
-            const res = await fetch('/api/lab', {
+            const res = await fetch('/api/appointments', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(inputValues)
@@ -55,7 +75,7 @@ const AddAppointmentsPage = () => {
             const data = await res.json();
 
             if (!res.ok) {
-                throw new Error(data.message || 'Failed to create lab test');
+                throw new Error(data.message || 'Failed to create appointment');
             }
 
             setShowSuccess(true);
