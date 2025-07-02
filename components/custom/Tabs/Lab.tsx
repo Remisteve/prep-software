@@ -2,125 +2,126 @@ import React from 'react';
 import {
     Clock,
     Check,
-    Plus,
-    Download,
-    Eye
+    Plus
 } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { Button } from '@/components/ui/button';
 
 
 
-const labResults = {
-    pending: [
-        {
-            id: 'LAB001',
-            testName: 'HIV Antibody Test',
-            orderedDate: '2024-06-25',
-            expectedResults: '2024-06-28',
-            status: 'processing',
-            urgency: 'routine',
-            orderedBy: 'Dr. Sarah Wilson',
-            facility: 'Downtown Health Clinic',
-            description: 'Routine HIV screening for PrEP monitoring'
-        },
-        {
-            id: 'LAB002',
-            testName: 'Comprehensive Metabolic Panel',
-            orderedDate: '2024-06-25',
-            expectedResults: '2024-06-28',
-            status: 'sample_received',
-            urgency: 'routine',
-            orderedBy: 'Dr. Sarah Wilson',
-            facility: 'Downtown Health Clinic',
-            description: 'Kidney function monitoring for Injectable PrEP'
-        },
-        {
-            id: 'LAB003',
-            testName: 'STI Panel (Chlamydia, Gonorrhea, Syphilis)',
-            orderedDate: '2024-06-24',
-            expectedResults: '2024-06-29',
-            status: 'pending_collection',
-            urgency: 'routine',
-            orderedBy: 'Dr. Sarah Wilson',
-            facility: 'Downtown Health Clinic',
-            description: 'Comprehensive STI screening'
-        }
-    ],
-    recent: [
-        {
-            id: 'LAB004',
-            testName: 'HIV Antibody Test',
-            resultDate: '2024-06-15',
-            orderedDate: '2024-06-10',
-            status: 'completed',
-            result: 'Negative',
-            urgency: 'routine',
-            orderedBy: 'Dr. Sarah Wilson',
-            facility: 'Downtown Health Clinic',
-            normalRange: 'Negative',
-            isNormal: true,
-            description: 'Routine HIV screening for PrEP monitoring'
-        },
-        {
-            id: 'LAB005',
-            testName: 'Creatinine',
-            resultDate: '2024-06-15',
-            orderedDate: '2024-06-10',
-            status: 'completed',
-            result: '0.9 mg/dL',
-            urgency: 'routine',
-            orderedBy: 'Dr. Sarah Wilson',
-            facility: 'Downtown Health Clinic',
-            normalRange: '0.7-1.3 mg/dL',
-            isNormal: true,
-            description: 'Kidney function monitoring'
-        },
-        {
-            id: 'LAB006',
-            testName: 'Hepatitis B Surface Antigen',
-            resultDate: '2024-05-20',
-            orderedDate: '2024-05-15',
-            status: 'completed',
-            result: 'Negative',
-            urgency: 'routine',
-            orderedBy: 'Dr. Sarah Wilson',
-            facility: 'Downtown Health Clinic',
-            normalRange: 'Negative',
-            isNormal: true,
-            description: 'Hepatitis B screening'
-        }
-    ],
-    scheduled: [
-        {
-            id: 'LAB007',
-            testName: 'HIV Antibody Test',
-            scheduledDate: '2024-07-15',
-            scheduledTime: '10:00 AM',
-            status: 'scheduled',
-            urgency: 'routine',
-            orderedBy: 'Dr. Sarah Wilson',
-            facility: 'Downtown Health Clinic',
-            description: 'Routine 3-month HIV screening for PrEP',
-            instructions: 'No fasting required'
-        },
-        {
-            id: 'LAB008',
-            testName: 'Comprehensive Metabolic Panel',
-            scheduledDate: '2024-07-15',
-            scheduledTime: '10:00 AM',
-            status: 'scheduled',
-            urgency: 'routine',
-            orderedBy: 'Dr. Sarah Wilson',
-            facility: 'Downtown Health Clinic',
-            description: 'Kidney function monitoring for Injectable PrEP',
-            instructions: 'Fasting required (8-12 hours)'
-        }
-    ]
-};
+interface LabResults {
+    id: string;
+    testName: string;
+    date: string;
+    resultDate: string;
+    status: 'processing' | 'sample_received' | 'pending_collection' | 'completed';
+    urgency: string;
+    orderedBy: string;
+    facility: string;
+    description: string;
+    instructions: string;
+    result?: string;
+    normalRange?: string;
+    isNormal: boolean;
+}
+
+
+
+
+
+const labResults: LabResults[] = [
+    {
+        id: 'LAB001',
+        testName: 'HIV Antibody Test',
+        date: '2024-06-25',
+        resultDate: '2024-06-28',
+        status: 'processing',
+        urgency: 'routine',
+        orderedBy: 'Dr. Sarah Wilson',
+        facility: 'Downtown Health Clinic',
+        description: 'Routine HIV screening for PrEP monitoring',
+        instructions: '',
+        isNormal: false
+    },
+    {
+        id: 'LAB002',
+        testName: 'Comprehensive Metabolic Panel',
+        date: '2024-06-25',
+        resultDate: '2024-06-28',
+        status: 'sample_received',
+        urgency: 'routine',
+        orderedBy: 'Dr. Sarah Wilson',
+        facility: 'Downtown Health Clinic',
+        description: 'Kidney function monitoring for Injectable PrEP',
+        instructions: '',
+        isNormal: false
+    },
+    {
+        id: 'LAB003',
+        testName: 'STI Panel (Chlamydia, Gonorrhea, Syphilis)',
+        date: '2024-06-24',
+        resultDate: '2024-06-29',
+        status: 'pending_collection',
+        urgency: 'routine',
+        orderedBy: 'Dr. Sarah Wilson',
+        facility: 'Downtown Health Clinic',
+        description: 'Comprehensive STI screening',
+        instructions: '',
+        isNormal: false
+    },
+    {
+        id: 'LAB004',
+        testName: 'HIV Antibody Test',
+        date: '2024-06-15',
+        resultDate: '2024-06-10',
+        status: 'completed',
+        result: 'Negative',
+        urgency: 'routine',
+        orderedBy: 'Dr. Sarah Wilson',
+        facility: 'Downtown Health Clinic',
+        normalRange: 'Negative',
+        isNormal: true,
+        description: 'Routine HIV screening for PrEP monitoring',
+        instructions: ''
+    },
+    {
+        id: 'LAB005',
+        testName: 'Creatinine',
+        date: '2024-06-15',
+        resultDate: '2024-06-10',
+        status: 'completed',
+        result: '0.9 mg/dL',
+        urgency: 'routine',
+        orderedBy: 'Dr. Sarah Wilson',
+        facility: 'Downtown Health Clinic',
+        normalRange: '0.7-1.3 mg/dL',
+        isNormal: true,
+        description: 'Kidney function monitoring',
+        instructions: ''
+    },
+    {
+        id: 'LAB006',
+        testName: 'Hepatitis B Surface Antigen',
+        date: '2024-05-20',
+        resultDate: '2024-05-15',
+        status: 'completed',
+        result: 'Negative',
+        urgency: 'routine',
+        orderedBy: 'Dr. Sarah Wilson',
+        facility: 'Downtown Health Clinic',
+        normalRange: 'Negative',
+        isNormal: true,
+        description: 'Hepatitis B screening',
+        instructions: ''
+    }
+]
+
+
 
 
 
 const Lab = () => {
-
+    const router = useRouter()
 
     return (
         <div className="space-y-8">
@@ -130,10 +131,12 @@ const Lab = () => {
                     <h2 className="text-2xl font-bold text-gray-900">Lab Results</h2>
                     <p className="text-gray-600">Track your test results and upcoming lab appointments</p>
                 </div>
-                <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2">
+                <Button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2"
+                    onClick={() => router.push('/admin/lab/add')}
+                >
                     <Plus className="h-4 w-4" />
                     <span>Request Test</span>
-                </button>
+                </Button>
             </div>
 
 
@@ -143,16 +146,16 @@ const Lab = () => {
                 <div className="flex items-center space-x-3 mb-4">
                     <Clock className="h-6 w-6 text-yellow-600" />
                     <h3 className="text-xl font-semibold text-gray-900">Waiting for Results</h3>
-                    {labResults.pending.length > 0 && (
+                    {labResults.length > 0 && (
                         <span className="bg-yellow-100 text-yellow-800 text-sm font-medium px-2 py-1 rounded-full">
-                            {labResults.pending.length} pending
+                            {labResults.length} pending
                         </span>
                     )}
                 </div>
 
-                {labResults.pending.length > 0 ? (
+                {labResults.length > 0 ? (
                     <div className="space-y-4">
-                        {labResults.pending.map((test) => (
+                        {labResults.map((test) => (
                             <div key={test.id} className="border border-yellow-200 rounded-lg p-4 bg-yellow-50">
                                 <div className="flex items-start justify-between">
                                     <div className="flex-1">
@@ -169,11 +172,11 @@ const Lab = () => {
                                         <div className="grid md:grid-cols-3 gap-4 text-sm">
                                             <div>
                                                 <span className="font-medium text-gray-700">Ordered:</span>
-                                                <p className="text-gray-600">{new Date(test.orderedDate).toLocaleDateString()}</p>
+                                                <p className="text-gray-600">{new Date(test.date).toLocaleDateString()}</p>
                                             </div>
                                             <div>
                                                 <span className="font-medium text-gray-700">Expected Results:</span>
-                                                <p className="text-gray-600">{new Date(test.expectedResults).toLocaleDateString()}</p>
+                                                <p className="text-gray-600">{new Date(test.resultDate).toLocaleDateString()}</p>
                                             </div>
                                             <div>
                                                 <span className="font-medium text-gray-700">Provider:</span>
@@ -206,7 +209,7 @@ const Lab = () => {
                     <h3 className="text-xl font-semibold text-gray-900">Recent Results</h3>
                 </div>
 
-                <div className="space-y-4">
+                {/* <div className="space-y-4">
                     {labResults.recent.map((test) => (
                         <div key={test.id} className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
                             <div className="flex items-start justify-between">
@@ -253,7 +256,7 @@ const Lab = () => {
                             </div>
                         </div>
                     ))}
-                </div>
+                </div> */}
             </div>
 
         </div>
