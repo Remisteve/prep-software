@@ -23,11 +23,7 @@ const handler = NextAuth({
         isSignUp: { label: 'Sign Up', type: 'hidden' }
       },
       async authorize(credentials) {
-        console.log('🔐 Credentials received:', { 
-          email: credentials?.email, 
-          hasPassword: !!credentials?.password,
-          isSignUp: credentials?.isSignUp 
-        });
+
 
         try {
           if (!credentials?.email || !credentials?.password) {
