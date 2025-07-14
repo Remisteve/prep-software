@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Patient } from '@/app/admin/lab/add/page';
 import { Download, Edit, Eye, Search, Trash2 } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
@@ -45,7 +44,6 @@ const UsersList = () => {
 
         fetchUsers();
     }, [gender, search]);
-    console.log(users)
     return (
         <>
             {/* Search and Filter */}

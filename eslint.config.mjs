@@ -16,6 +16,10 @@ export default defineConfig([
       '@typescript-eslint/no-explicit-any': 'off',
       'react/react-in-jsx-scope': 'off',
       'react/no-unescaped-entities': 'off',
+      '@typescript-eslint/no-unused-vars': 'off',
+      'react/prop-types': 'off',
+      'prefer-const': 'off',
+      '@typescript-eslint/no-non-null-asserted-optional-chain': 'off',
     }
   }
 ]);

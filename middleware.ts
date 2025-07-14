@@ -11,14 +11,17 @@ export default async function middleware(request: NextRequest) {
 
   const pathname = request.nextUrl.pathname;
   
-  console.log('🛡️ Middleware:', { pathname, hasToken: !!token, role: token?.role });
-
-  // If no token, redirect to login
-  if (!token) {
-    console.log('❌ No token, redirecting to /auth/login');
-    return NextResponse.redirect(new URL("/auth/login", request.url));
+  // Allow public access to root route
+  if (pathname === "/" || pathname.startsWith('/auth/login')) {
+    console.log('✅ Public route access allowed for /');
+    return NextResponse.next();
   }
 
+  // If no token, redirect to home page (public route)
+  if (!token) {
+    console.log('❌ No token, redirecting to /');
+    return NextResponse.redirect(new URL("/", request.url));
+  }
   // Check the role and redirect based on the role
   switch (token.role) {
     case "admin":
@@ -35,9 +38,11 @@ export default async function middleware(request: NextRequest) {
     case "user":
       if (
         pathname.startsWith("/profile") ||
-        pathname.startsWith("/patientprofile") ||
-        pathname.startsWith("/complain") ||
-        pathname.startsWith("/report")
+        pathname.startsWith("/appointments") ||
+        // pathname.startsWith("/admin/facilities/add") ||
+        pathname.startsWith("/my-dashboard")||
+        pathname.startsWith("/enrollments") || 
+        pathname.startsWith("/facilities")
       ) {
         // User accessing allowed routes - allow access
         console.log('✅ User accessing allowed area');
@@ -51,7 +56,7 @@ export default async function middleware(request: NextRequest) {
     default:
       // Unknown role - redirect to login
       console.log('❌ Unknown role, redirecting to /auth/login');
-      return NextResponse.redirect(new URL("/auth/login", request.url));
+      return NextResponse.redirect(new URL("/", request.url));
   }
 }
 

@@ -7,8 +7,8 @@ import './globals.css'
 
 import { Toaster } from '@/components/ui/sonner'
 import { ThemeProvider } from '@/components/theme-provider'
-import { SessionProvider, useSession } from 'next-auth/react'
-import { ReactNode, useEffect } from 'react'
+import { SessionProvider } from 'next-auth/react'
+import { ReactNode } from 'react'
 
 const inter = Inter({
   subsets: ['latin'],
@@ -26,13 +26,6 @@ function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  const { data: session, status } = useSession()
-  useEffect(() => {
-    if (status === 'loading') return;
-
-    // If user is authenticated, redirect to dashboard
-
-  }, [session, status])
 
 
   return (
