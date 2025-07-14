@@ -12,7 +12,7 @@ export default async function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
   
   // Allow public access to root route
-  if (pathname === "/") {
+  if (pathname === "/" || pathname.startsWith('/auth/login')) {
     console.log('✅ Public route access allowed for /');
     return NextResponse.next();
   }
@@ -38,9 +38,11 @@ export default async function middleware(request: NextRequest) {
     case "user":
       if (
         pathname.startsWith("/profile") ||
-        pathname.startsWith("/patientprofile") ||
-        pathname.startsWith("/complain") ||
-        pathname.startsWith("/report")
+        pathname.startsWith("/appointments") ||
+        // pathname.startsWith("/admin/facilities/add") ||
+        pathname.startsWith("/my-dashboard")||
+        pathname.startsWith("/enrollments") || 
+        pathname.startsWith("/facilities")
       ) {
         // User accessing allowed routes - allow access
         console.log('✅ User accessing allowed area');

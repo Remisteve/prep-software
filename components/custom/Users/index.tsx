@@ -45,7 +45,6 @@ const UsersList = () => {
 
         fetchUsers();
     }, [gender, search]);
-    console.log(users)
     return (
         <>
             {/* Search and Filter */}
