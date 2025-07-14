@@ -9,70 +9,23 @@ import {
     Globe, Wifi, Car, Coffee, Navigation, Video
 } from 'lucide-react';
 import GlassCard from '@/components/custom/GlassCard';
+import StatusBadge, { statusStyles } from '@/components/custom/StatusBadge';
+import { ProgramInterface } from '@/types/enrollments';
 
 
 interface ProgramDetailModalProps {
-    program: {
-        icon: ElementType
-        category: string
-        name: string
-        memberCount: string
-        duration: string
-        description: string
-        rating: string
-    },
+    program: ProgramInterface,
     isOpen: boolean
     onClose: ()=>void
     onEnroll: (program:{name:string})=>void
 }
 
-// Status Color System (matching your theme)
-const statusStyles = {
-    success: {
-        bg: 'bg-black/30',
-        border: 'border-emerald-400/40',
-        text: 'text-emerald-400',
-        icon: 'text-emerald-400'
-    },
-    warning: {
-        bg: 'bg-black/30',
-        border: 'border-amber-400/40',
-        text: 'text-amber-400',
-        icon: 'text-amber-400'
-    },
-    error: {
-        bg: 'bg-black/30',
-        border: 'border-red-400/40',
-        text: 'text-red-400',
-        icon: 'text-red-400'
-    },
-    info: {
-        bg: 'bg-black/30',
-        border: 'border-blue-400/40',
-        text: 'text-blue-400',
-        icon: 'text-blue-400'
-    },
-    neutral: {
-        bg: 'bg-black/30',
-        border: 'border-white/20',
-        text: 'text-gray-300',
-        icon: 'text-gray-300'
-    }
-};
 
 
-// Status Badge Component
-function StatusBadge({ status, children }) {
-    const style = statusStyles[status] || statusStyles.neutral;
-    return (
-        <span className={`px-3 py-1 text-xs font-medium rounded-full ${style.bg} ${style.border} ${style.text} border`}>
-            {children}
-        </span>
-    );
-}
+
 
 // Sample Enrollment Programs Data
-const enrollmentPrograms = [
+const enrollmentPrograms: ProgramInterface[] = [
     {
         id: 1,
         name: 'PrEP Prevention Program',
@@ -235,15 +188,10 @@ const enrollmentPrograms = [
     }
 ];
 
-interface CurrentEnrollmentsProps{
-        id: string
-        shortName: string
-        icon: ElementType
-        enrollmentDate: string
-}
+
 
 // Current Enrollments Component
-function CurrentEnrollments({ enrollments }:{enrollments: CurrentEnrollmentsProps[]}) {
+function CurrentEnrollments({ enrollments }:{enrollments: ProgramInterface[]}) {
     return (
         <GlassCard variant="success" className="p-6 mb-6">
             <h2 className="text-xl font-bold text-white mb-4 flex items-center">
@@ -260,7 +208,7 @@ function CurrentEnrollments({ enrollments }:{enrollments: CurrentEnrollmentsProp
                             <StatusBadge status="success">Active</StatusBadge>
                         </div>
                         <p className="text-sm text-gray-300 mb-2">
-                            Enrolled: {new Date(program.enrollmentDate).toLocaleDateString()}
+                            Enrolled: {new Date(program?.enrollmentDate!).toLocaleDateString()}
                         </p>
                         <div className="flex space-x-2">
                             <button className="px-3 py-1 bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 rounded-lg text-sm hover:bg-emerald-500/30 transition-all">
@@ -500,8 +448,11 @@ function ProgramDetailModal({ program, isOpen, onClose, onEnroll }: ProgramDetai
 }
 
 // Program Card Component
-function ProgramCard({ program, onClick }) {
-    const getPopularityInfo = (popularity) => {
+function ProgramCard({ program, onClick }:{
+    program: ProgramInterface
+    onClick:(program: ProgramInterface)=>void
+}) {
+    const getPopularityInfo = (popularity: string) => {
         switch (popularity) {
             case 'high':
                 return { text: 'Popular', status: 'success' };
@@ -517,7 +468,7 @@ function ProgramCard({ program, onClick }) {
     const popularityInfo = getPopularityInfo(program.popularity);
 
     return (
-        <GlassCard className="p-6 cursor-pointer" hover onClick={() => onClick(program)}>
+        <GlassCard className="p-6 cursor-pointer" hover>
             <div className="flex items-start justify-between mb-4">
                 <div className="flex items-start space-x-3">
                     <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center">
@@ -568,7 +519,7 @@ function ProgramCard({ program, onClick }) {
 function EnrollmentsPage() {
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('all');
-    const [selectedProgram, setSelectedProgram] = useState<ProgramDetailModalProps | null>(null);
+    const [selectedProgram, setSelectedProgram] = useState<ProgramInterface | null>(null);
     const [showModal, setShowModal] = useState(false);
 
     const currentEnrollments = enrollmentPrograms.filter(p => p.isEnrolled);
@@ -585,7 +536,7 @@ function EnrollmentsPage() {
         });
     }, [searchTerm, selectedCategory]);
 
-    const handleProgramClick = (program: string) => {
+    const handleProgramClick = (program: ProgramInterface) => {
         setSelectedProgram(program);
         setShowModal(true);
     };
@@ -739,7 +690,7 @@ function EnrollmentsPage() {
 
             {/* Program Detail Modal */}
             <ProgramDetailModal
-                program={selectedProgram}
+                program={selectedProgram!}
                 isOpen={showModal}
                 onClose={() => setShowModal(false)}
                 onEnroll={handleEnroll}
