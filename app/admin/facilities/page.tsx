@@ -478,15 +478,7 @@ function HospitalManagement() {
                 </div>
             </GlassCard>
 
-
-
-            {/* Results Count */}
-            <div className="flex items-center justify-between">
-                <p className="text-gray-300">
-                    Showing {sortedHospitals.length} of {hospitals.length} hospitals
-                </p>
-            </div>
-
+            
             {/* Data Table */}
             <TableContainer
                 title='Hospitals'
