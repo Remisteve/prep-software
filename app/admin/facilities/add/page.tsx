@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 'use client'
 
 import React, { useState, useRef } from 'react';
@@ -141,7 +140,7 @@ function HospitalRegistration() {
         setFormData(prev => ({
             ...prev,
             [section]: {
-                ...prev[section],
+                ...(prev as any)[section],
                 [field]: value
             }
         }));
@@ -433,7 +432,7 @@ function HospitalRegistration() {
                         <GlassCard className="p-6">
                             <PhotoUploadSection
                                 photos={photos}
-                                onPhotoAdd={handlePhotoAdd}
+                                // onPhotoAdd={handlePhotoAdd}
                                 onPhotoRemove={handlePhotoRemove}
                             />
                         </GlassCard>

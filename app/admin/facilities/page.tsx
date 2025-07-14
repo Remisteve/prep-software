@@ -13,11 +13,14 @@ import { useRouter } from 'next/navigation';
 import TableContainer from '@/components/custom/table/TableContainer';
 import { hospitalColumns } from './column';
 import GlassCard from '@/components/custom/GlassCard';
+import { HospitalInterface, SortKey } from '@/types/hospital';
 
 
 
 // Hospital Details Modal
-function HospitalModal({ hospital, isOpen, onClose }) {
+function HospitalModal({ hospital, isOpen, onClose }:
+    { hospital: HospitalInterface, isOpen: boolean, onClose: () => void }
+) {
     if (!isOpen || !hospital) return null;
 
     return (
@@ -179,7 +182,7 @@ function HospitalModal({ hospital, isOpen, onClose }) {
 }
 
 // Mock Hospital Data
-const mockHospitals = [
+const mockHospitals: HospitalInterface[] = [
     {
         id: 'HOSP-001',
         name: 'MedConnect Downtown Medical Center',
@@ -354,26 +357,30 @@ function HospitalManagement() {
         return matchesSearch && matchesType && matchesActive;
     });
 
-    // Sort hospitals
+    const getValue = (obj: HospitalInterface, key: SortKey) => {
+        switch (key) {
+            case 'name': return obj.name;
+            case 'registrationDate': return obj.registrationDate;
+            case 'active': return obj.active;
+            case 'address.city': return obj.address.city;
+            case 'kpis.performanceScore': return obj.kpis.performanceScore;
+            default: return '';
+        }
+    };
+
     const sortedHospitals = [...filteredHospitals].sort((a, b) => {
-        const aValue = sortConfig.key.includes('.')
-            ? sortConfig.key.split('.').reduce((obj, key) => obj[key], a)
-            : a[sortConfig.key];
-        const bValue = sortConfig.key.includes('.')
-            ? sortConfig.key.split('.').reduce((obj, key) => obj[key], b)
-            : b[sortConfig.key];
+        const aValue = getValue(a, sortConfig.key as SortKey);
+        const bValue = getValue(b, sortConfig.key as SortKey);
 
         if (typeof aValue === 'string') {
             return sortConfig.direction === 'asc'
-                ? aValue.localeCompare(bValue)
-                : bValue.localeCompare(aValue);
+                ? aValue.localeCompare(bValue as string)
+                : (bValue as string).localeCompare(aValue);
         }
 
-        if (sortConfig.direction === 'asc') {
-            return aValue < bValue ? -1 : aValue > bValue ? 1 : 0;
-        } else {
-            return aValue > bValue ? -1 : aValue < bValue ? 1 : 0;
-        }
+        return sortConfig.direction === 'asc'
+            ? (aValue as number) - (bValue as number)
+            : (bValue as number) - (aValue as number);
     });
 
     // Get statistics
@@ -486,13 +493,14 @@ function HospitalManagement() {
                 icon={<Hospital />}
                 description='Registered hospitals'
                 columns={hospitalColumns}
+                search=''
                 data={hospitals}
                 total={hospitals?.length}
-            />
+                setSearch={undefined} />
 
             {/* Hospital Details Modal */}
             <HospitalModal
-                hospital={selectedHospital}
+                hospital={selectedHospital!}
                 isOpen={showModal}
                 onClose={() => {
                     setShowModal(false);

@@ -5,37 +5,9 @@ import {
   Activity, Award, Users,
   Eye, MoreVertical
 } from 'lucide-react';
+import { HospitalInterface } from '@/types/hospital';
 
-// Hospital Interface
-interface HospitalInterface {
-  id: string;
-  name: string;
-  type: string;
-  cccNumber: string;
-  active: boolean;
-  registrationDate: string;
-  lastUpdated: string;
-  address: {
-    street: string;
-    city: string;
-    state: string;
-    zipCode: string;
-  };
-  contact: {
-    mainPhone: string;
-    emergencyPhone: string;
-    email: string;
-    website: string;
-  };
-  photos: number;
-  adminNotes: string;
-  kpis: {
-    performanceScore: number;
-    registeredPatients: number;
-    drugsDispensed: number;
-    monthlyGrowth: number;
-  };
-}
+
 
 // Status Badge Component
 const StatusBadge = ({ active }: { active: boolean }) => (
