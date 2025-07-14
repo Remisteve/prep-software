@@ -2,7 +2,7 @@
 
 import UserSearch from '@/components/custom/search/UserSearch'
 import React, { useMemo, useState } from 'react'
-import { Errors, Patient } from '../../lab/add/page';
+import { Errors, Patient } from '../../lab-requests/add/page';
 import SelectInput from '@/components/custom/forms/SelectInput';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';

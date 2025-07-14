@@ -17,7 +17,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Patient } from '@/app/admin/lab/add/page';
+import { Patient } from '@/app/admin/lab-requests/add/page';
 
 interface UserAccountProps {
     user?: Patient;

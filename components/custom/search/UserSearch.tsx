@@ -1,6 +1,6 @@
 'use client'
 
-import { Patient } from '@/app/admin/lab/add/page';
+import { Patient } from '@/app/admin/lab-requests/add/page';
 import { Input } from '@/components/ui/input';
 import { File, Loader2, Search, X } from 'lucide-react';
 import React, { useState, useEffect, useCallback, Dispatch, SetStateAction } from 'react';

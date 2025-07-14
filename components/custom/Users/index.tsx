@@ -1,4 +1,4 @@
-import { Patient } from '@/app/admin/lab/add/page';
+import { Patient } from '@/app/admin/lab-requests/add/page';
 import { Download, Edit, Eye, Search, Trash2 } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 

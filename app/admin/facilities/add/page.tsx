@@ -8,7 +8,7 @@ import {
     Loader2
 } from 'lucide-react';
 import GlassCard from '@/components/custom/GlassCard';
-import { Errors } from '../../lab/add/page';
+import { Errors } from '../../lab-requests/add/page';
 import useUploadImage from '@/hooks/useUploadImage';
 
 

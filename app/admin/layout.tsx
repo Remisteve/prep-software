@@ -1,7 +1,7 @@
 'use client'
 
 import React, { ReactNode, useEffect, useMemo, useState } from 'react'
-import { AlertTriangle, Bell, BookOpen, Calendar, Home, MapPin, MessageCircle, Shield, Users } from 'lucide-react'
+import { AlertTriangle, Bell, BookOpen, Calendar, Home, MapPin, MessageCircle, Shield, TestTube, Users } from 'lucide-react'
 import Sidebar from '@/components/custom/nav/Sidebar';
 
 const Layout = ({ children }: { children: ReactNode }) => {
@@ -13,11 +13,11 @@ const Layout = ({ children }: { children: ReactNode }) => {
         { id: 'dashboard', label: 'Dashboard', icon: Home, path: '/admin/dashboard' },
         { id: 'users', label: 'Users', icon: Users, path: '/admin/users' },
         { id: 'facilities', label: 'Facilities', icon: MapPin, path: '/admin/facilities' },
-        { id: 'appointments', label: 'Appointments', icon: Calendar, path: '/appointments' },
+        { id: 'appointments', label: 'Appointments', icon: Calendar, path: '/admin/appointments' },
         { id: 'resources', label: 'Educational Resources', icon: BookOpen, path: '/resources' },
         { id: 'requests', label: 'Requests', icon: Shield, path: '/admin/requests' },
         { id: 'reminders', label: 'Reminders', icon: Bell, path: '/bell' },
-        { id: 'lab', label: 'Lab', icon: Bell, path: '/lab' },
+        { id: 'lab', label: 'Lab Requests', icon: TestTube, path: '/admin/lab-requests' },
         { id: 'consultation', label: 'Provider Chat', icon: MessageCircle, path: '/consultation' },
         { id: 'emergency', label: 'Emergency Support', icon: AlertTriangle, path: '/emergency' }
     ], []);
