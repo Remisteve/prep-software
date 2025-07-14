@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react';
+import React, { ReactNode, useState } from 'react';
 import {
     Users, Building2, Check, X,
     Clock, CheckCircle, RefreshCw, User, Activity,
@@ -9,46 +9,22 @@ import {
 } from 'lucide-react';
 import TableContainer from '@/components/custom/table/TableContainer';
 import { RequestInterface } from '@/types/requests';
-import { requestColumns } from './column';
+import { requestColumns, requestStatusStyles } from './column';
 import GlassCard from '@/components/custom/GlassCard';
 // Assuming this is the enhanced DataTable
 
-// Request Interface
-
-
-// Status Color System
-const statusStyles = {
-    pending: {
-        bg: 'bg-amber-500/20',
-        border: 'border-amber-400/30',
-        text: 'text-amber-400',
-        icon: 'text-amber-400'
-    },
-    approved: {
-        bg: 'bg-emerald-500/20',
-        border: 'border-emerald-400/30',
-        text: 'text-emerald-400',
-        icon: 'text-emerald-400'
-    },
-    rejected: {
-        bg: 'bg-red-500/20',
-        border: 'border-red-400/30',
-        text: 'text-red-400',
-        icon: 'text-red-400'
-    },
-    under_review: {
-        bg: 'bg-blue-500/20',
-        border: 'border-blue-400/30',
-        text: 'text-blue-400',
-        icon: 'text-blue-400'
-    }
-};
 
 
 
 // Enhanced Status Badge Component
-function StatusBadge({ status, children, pulse = false }) {
-    const style = statusStyles[status] || statusStyles.pending;
+function StatusBadge({ status, children, pulse = false }:
+    {
+        status: string
+        children: ReactNode
+        pulse?: boolean
+    }
+) {
+    const style = requestStatusStyles[status] || requestStatusStyles.pending;
     return (
         <span className={`inline-flex items-center px-3 py-1 text-xs font-medium rounded-full 
             ${style.bg} ${style.border} ${style.text} border backdrop-blur-sm
@@ -92,7 +68,7 @@ const UserAvatar = ({ name, department }: { name: string; department?: string })
 
 // Status Icon Component
 const StatusIcon = ({ status }: { status: string }) => {
-    const style = statusStyles[status as keyof typeof statusStyles] || statusStyles.pending;
+    const style = requestStatusStyles[status as keyof typeof requestStatusStyles] || requestStatusStyles.pending;
 
     switch (status) {
         case 'approved':
@@ -111,7 +87,9 @@ const StatusIcon = ({ status }: { status: string }) => {
 // Actions Dropdown Component
 
 // Request Details Modal (Enhanced)
-function RequestModal({ request, isOpen, onClose, onUpdateStatus }) {
+function RequestModal({ request, isOpen, onClose, onUpdateStatus }: {
+    request: RequestInterface, isOpen: boolean, onClose: () => void, onUpdateStatus: (id: string, status: string, adminNote: string) => void
+}) {
     const [adminNote, setAdminNote] = useState('');
     const [activeTab, setActiveTab] = useState('approve');
 
@@ -585,7 +563,6 @@ function RequestsManagement() {
     );
 
 
-
     return (
         <div className="">
             <div className="max-w-7xl mx-auto space-y-6">
@@ -607,7 +584,7 @@ function RequestsManagement() {
 
                 {/* Enhanced Request Details Modal */}
                 <RequestModal
-                    request={selectedRequest}
+                    request={selectedRequest!}
                     isOpen={showModal}
                     onClose={() => {
                         setShowModal(false);

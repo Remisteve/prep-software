@@ -1,9 +1,17 @@
+import { StatusInterface } from "@/components/custom/StatusBadge";
 import { RequestInterface } from "@/types/requests";
 import { ColumnDef } from "@tanstack/react-table";
 import { Activity, ArrowRight, Building2, Calendar, CheckCircle, Clock, FileText, User, X } from "lucide-react";
 import Link from "next/link";
+import { ReactNode } from "react";
 
-const statusStyles = {
+export const requestStatusStyles: {
+    [key: string]: StatusInterface
+    pending: StatusInterface
+    approved: StatusInterface
+    rejected: StatusInterface
+    under_review: StatusInterface
+} = {
     pending: {
         bg: 'bg-amber-500/20',
         border: 'border-amber-400/30',
@@ -63,7 +71,7 @@ const UserAvatar = ({ name, department }: { name: string; department?: string })
 
 // Status Icon Component
 const StatusIcon = ({ status }: { status: string }) => {
-    const style = statusStyles[status as keyof typeof statusStyles] || statusStyles.pending;
+    const style = requestStatusStyles[status as keyof typeof requestStatusStyles] || requestStatusStyles.pending;
 
     switch (status) {
         case 'approved':
@@ -80,8 +88,14 @@ const StatusIcon = ({ status }: { status: string }) => {
 };
 
 // Enhanced Status Badge Component
-function StatusBadge({ status, children, pulse = false }) {
-    const style = statusStyles[status] || statusStyles.pending;
+function StatusBadge({ status, children, pulse = false }:
+    {
+        status: string
+        children: ReactNode
+        pulse?: boolean
+    }
+) {
+    const style = requestStatusStyles[status] || requestStatusStyles.pending;
     return (
         <span className={`inline-flex items-center px-3 py-1 text-xs font-medium rounded-full 
             ${style.bg} ${style.border} ${style.text} border backdrop-blur-sm

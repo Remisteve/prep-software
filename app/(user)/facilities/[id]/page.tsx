@@ -8,69 +8,12 @@ import {
     CheckCircle, Award, Car, Wifi, CreditCard, Coffee, UserCheck,
     Plus, Edit3, Share2, Bookmark, ExternalLink, Target, Bell
 } from 'lucide-react';
+import GlassCard from '@/components/custom/GlassCard';
+import StatusBadge, { statusStyles } from '@/components/custom/StatusBadge';
 
-// Status Color System (matching your theme)
-const statusStyles = {
-    success: {
-        bg: 'bg-black/30',
-        border: 'border-emerald-400/40',
-        text: 'text-emerald-400',
-        icon: 'text-emerald-400'
-    },
-    warning: {
-        bg: 'bg-black/30',
-        border: 'border-amber-400/40',
-        text: 'text-amber-400',
-        icon: 'text-amber-400'
-    },
-    error: {
-        bg: 'bg-black/30',
-        border: 'border-red-400/40',
-        text: 'text-red-400',
-        icon: 'text-red-400'
-    },
-    info: {
-        bg: 'bg-black/30',
-        border: 'border-blue-400/40',
-        text: 'text-blue-400',
-        icon: 'text-blue-400'
-    },
-    neutral: {
-        bg: 'bg-black/30',
-        border: 'border-white/20',
-        text: 'text-gray-300',
-        icon: 'text-gray-300'
-    }
-};
 
-// Glass Card Component
-function GlassCard({ children, className = "", hover = false, variant = "default" }) {
-    const variants = {
-        default: "backdrop-blur-lg bg-black/40 border-white/20",
-        primary: "backdrop-blur-lg bg-black/50 border-blue-500/30",
-        success: "backdrop-blur-lg bg-black/50 border-emerald-500/30"
-    };
 
-    return (
-        <div className={`
-            rounded-2xl ${variants[variant]} border
-            ${hover ? 'hover:bg-black/60 hover:border-white/30 hover:scale-[1.01] transition-all duration-300' : ''} 
-            ${className}
-        `}>
-            {children}
-        </div>
-    );
-}
 
-// Status Badge Component
-function StatusBadge({ status, children }) {
-    const style = statusStyles[status] || statusStyles.neutral;
-    return (
-        <span className={`px-3 py-1 text-xs font-medium rounded-full ${style.bg} ${style.border} ${style.text} border`}>
-            {children}
-        </span>
-    );
-}
 
 // Sample Detailed Hospital Data
 const hospitalData = {
