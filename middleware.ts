@@ -32,7 +32,7 @@ export default async function middleware(request: NextRequest) {
       } else {
         // Admin trying to access non-admin routes - redirect to admin
         console.log('🔄 Redirecting admin to /admin');
-        return NextResponse.redirect(new URL("/admin", request.url));
+        return NextResponse.redirect(new URL("/admin/dashboard", request.url));
       }
 
     case "user":

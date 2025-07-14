@@ -1,7 +1,7 @@
 'use client'
 
 import React, { ReactNode, useEffect, useMemo, useState } from 'react'
-import { AlertTriangle, Bell, BookOpen, Calendar, Home, MapPin, MessageCircle, Shield, User } from 'lucide-react'
+import { AlertTriangle, Bell, BookOpen, Calendar, Home, MapPin, MessageCircle, Shield, Users } from 'lucide-react'
 import Sidebar from '@/components/custom/nav/Sidebar';
 
 const Layout = ({ children }: { children: ReactNode }) => {
@@ -10,8 +10,8 @@ const Layout = ({ children }: { children: ReactNode }) => {
     const [isMobile, setIsMobile] = useState(false);
 
     const sections = useMemo(() => [
-        { id: 'dashboard', label: 'Dashboard', icon: Home, path: '/dashboard' },
-        { id: 'enrollment', label: 'Enrollment', icon: User, path: '/enrollments' },
+        { id: 'dashboard', label: 'Dashboard', icon: Home, path: '/admin/dashboard' },
+        { id: 'users', label: 'Users', icon: Users, path: '/admin/users' },
         { id: 'facilities', label: 'Facilities', icon: MapPin, path: '/admin/facilities' },
         { id: 'appointments', label: 'Appointments', icon: Calendar, path: '/appointments' },
         { id: 'resources', label: 'Educational Resources', icon: BookOpen, path: '/resources' },
