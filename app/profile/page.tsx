@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, ChangeEvent } from 'react';
 import {
     User, Mail, Phone, MapPin, Calendar, Shield, Activity, Settings,
     Edit3, Save, X, Upload, Camera, Bell, Lock, Eye, EyeOff,
@@ -14,343 +14,9 @@ import {
     ChevronDown
 } from 'lucide-react';
 import { signOut } from 'next-auth/react';
+import GlassCard from '@/components/custom/GlassCard';
+import StatusBadge from '@/components/custom/StatusBadge';
 
-// Status Color System (matching your theme)
-const statusStyles = {
-    success: {
-        bg: 'bg-black/30',
-        border: 'border-emerald-400/40',
-        text: 'text-emerald-400',
-        icon: 'text-emerald-400'
-    },
-    warning: {
-        bg: 'bg-black/30',
-        border: 'border-amber-400/40',
-        text: 'text-amber-400',
-        icon: 'text-amber-400'
-    },
-    error: {
-        bg: 'bg-black/30',
-        border: 'border-red-400/40',
-        text: 'text-red-400',
-        icon: 'text-red-400'
-    },
-    info: {
-        bg: 'bg-black/30',
-        border: 'border-blue-400/40',
-        text: 'text-blue-400',
-        icon: 'text-blue-400'
-    },
-    neutral: {
-        bg: 'bg-black/30',
-        border: 'border-white/20',
-        text: 'text-gray-300',
-        icon: 'text-gray-300'
-    }
-};
-
-// Glass Card Component
-function GlassCard({ children, className = "", hover = false, variant = "default" }) {
-    const variants = {
-        default: "backdrop-blur-lg bg-black/40 border-white/20",
-        primary: "backdrop-blur-lg bg-black/50 border-blue-500/30",
-        success: "backdrop-blur-lg bg-black/50 border-emerald-500/30",
-        danger: "backdrop-blur-lg bg-black/50 border-red-500/30"
-    };
-
-    return (
-        <div className={`
-            rounded-2xl ${variants[variant]} border
-            ${hover ? 'hover:bg-black/60 hover:border-white/30 hover:scale-[1.01] transition-all duration-300' : ''} 
-            ${className}
-        `}>
-            {children}
-        </div>
-    );
-}
-
-// Status Badge Component
-function StatusBadge({ status, children, pulse = false }) {
-    const style = statusStyles[status] || statusStyles.neutral;
-    return (
-        <span className={`px-3 py-1 text-xs font-medium rounded-full ${style.bg} ${style.border} ${style.text} border ${pulse ? 'animate-pulse' : ''}`}>
-            {children}
-        </span>
-    );
-}
-
-// Role Change Request Modal
-function RoleChangeRequestModal({ isOpen, onClose }) {
-    const [formData, setFormData] = useState({
-        currentRole: 'Patient',
-        requestedRole: '',
-        department: '',
-        hospitalId: '',
-        justification: '',
-        priority: 'medium'
-    });
-    const [isSubmitting, setIsSubmitting] = useState(false);
-    const [submitStatus, setSubmitStatus] = useState(null);
-
-    const roles = [
-        { value: 'patient', label: 'Patient' },
-        { value: 'nurse', label: 'Nurse' },
-        { value: 'senior_nurse', label: 'Senior Nurse' },
-        { value: 'nurse_manager', label: 'Nurse Manager' },
-        { value: 'physician', label: 'Physician' },
-        { value: 'senior_physician', label: 'Senior Physician' },
-        { value: 'department_head', label: 'Department Head' },
-        { value: 'administrator', label: 'Administrator' },
-        { value: 'lab_technician', label: 'Lab Technician' },
-        { value: 'pharmacist', label: 'Pharmacist' },
-        { value: 'therapist', label: 'Therapist' }
-    ];
-
-    const priorities = [
-        { value: 'low', label: 'Low Priority' },
-        { value: 'medium', label: 'Medium Priority' },
-        { value: 'high', label: 'High Priority' }
-    ];
-
-    const handleChange = (field, value) => {
-        setFormData(prev => ({ ...prev, [field]: value }));
-    };
-
-    const handleSubmit = async () => {
-        setIsSubmitting(true);
-
-        try {
-            // Simulate API call
-            await new Promise(resolve => setTimeout(resolve, 2000));
-
-            const requestData = {
-                id: `REQ-${Date.now()}`,
-                user: {
-                    name: 'Sarah Chen',
-                    email: 'sarah.chen@email.com',
-                    employeeId: 'USR-2024-001',
-                    department: formData.department
-                },
-                hospitalId: formData.hospitalId,
-                dateRequested: new Date().toISOString().split('T')[0],
-                dateApproved: null,
-                status: 'pending',
-                description: `Role change request from ${formData.currentRole} to ${formData.requestedRole}. ${formData.justification}`,
-                priority: formData.priority
-            };
-
-            console.log('Submitted role change request:', requestData);
-            setSubmitStatus('success');
-
-            // Reset form and close modal after success
-            setTimeout(() => {
-                setFormData({
-                    currentRole: 'Patient',
-                    requestedRole: '',
-                    department: '',
-                    hospitalId: '',
-                    justification: '',
-                    priority: 'medium'
-                });
-                setSubmitStatus(null);
-                onClose();
-            }, 2000);
-
-        } catch (error) {
-            console.error('Submission error:', error);
-            setSubmitStatus('error');
-        } finally {
-            setIsSubmitting(false);
-        }
-    };
-
-    if (!isOpen) return null;
-
-    return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-            <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={onClose}></div>
-            <div className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-                <GlassCard variant="primary" className="p-6">
-                    <div className="flex items-center justify-between mb-6">
-                        <div className="flex items-center space-x-4">
-                            <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center">
-                                <UserCheck className="w-6 h-6 text-white" />
-                            </div>
-                            <div>
-                                <h2 className="text-xl font-bold text-white">Role Change Request</h2>
-                                <p className="text-blue-400">Submit a request for role change or promotion</p>
-                            </div>
-                        </div>
-                        <button
-                            onClick={onClose}
-                            className="p-2 rounded-lg bg-white/10 border border-white/20 text-white hover:bg-white/20 transition-all"
-                        >
-                            <X className="w-5 h-5" />
-                        </button>
-                    </div>
-
-                    {/* Success/Error Messages */}
-                    {submitStatus === 'success' && (
-                        <div className="mb-6 p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30">
-                            <div className="flex items-center space-x-3 text-emerald-400">
-                                <CheckCircle className="w-6 h-6" />
-                                <span className="font-medium">Request submitted successfully! You will receive updates via email.</span>
-                            </div>
-                        </div>
-                    )}
-
-                    {submitStatus === 'error' && (
-                        <div className="mb-6 p-4 rounded-xl bg-red-500/10 border border-red-500/30">
-                            <div className="flex items-center space-x-3 text-red-400">
-                                <AlertTriangle className="w-6 h-6" />
-                                <span className="font-medium">Failed to submit request. Please try again.</span>
-                            </div>
-                        </div>
-                    )}
-
-                    <div className="space-y-6">
-                        {/* Current Role Info */}
-                        <div className="p-4 rounded-xl bg-blue-500/10 border border-blue-500/30">
-                            <h3 className="text-white font-medium mb-2">Current Information</h3>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div>
-                                    <p className="text-gray-400 text-xs mb-1">Current Role</p>
-                                    <p className="text-blue-400 font-medium">{formData.currentRole}</p>
-                                </div>
-                                <div>
-                                    <p className="text-gray-400 text-xs mb-1">Hospital</p>
-                                    <p className="text-white">MedConnect Downtown Medical Center</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Request Details */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div>
-                                <label className="block text-gray-300 text-sm font-medium mb-2">
-                                    Requested Role <span className="text-red-400">*</span>
-                                </label>
-                                <div className="relative">
-                                    <select
-                                        value={formData.requestedRole}
-                                        onChange={(e) => handleChange('requestedRole', e.target.value)}
-                                        className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white focus:outline-none focus:border-blue-400 transition-all appearance-none"
-                                    >
-                                        <option value="" className="bg-gray-800">Select requested role</option>
-                                        {roles.map((role) => (
-                                            <option key={role.value} value={role.label} className="bg-gray-800">
-                                                {role.label}
-                                            </option>
-                                        ))}
-                                    </select>
-                                    <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
-                                </div>
-                            </div>
-
-                            <div>
-                                <label className="block text-gray-300 text-sm font-medium mb-2">
-                                    Priority Level
-                                </label>
-                                <div className="relative">
-                                    <select
-                                        value={formData.priority}
-                                        onChange={(e) => handleChange('priority', e.target.value)}
-                                        className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white focus:outline-none focus:border-blue-400 transition-all appearance-none"
-                                    >
-                                        {priorities.map((priority) => (
-                                            <option key={priority.value} value={priority.value} className="bg-gray-800">
-                                                {priority.label}
-                                            </option>
-                                        ))}
-                                    </select>
-                                    <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
-                                </div>
-                            </div>
-
-                            <div>
-                                <label className="block text-gray-300 text-sm font-medium mb-2">
-                                    Department
-                                </label>
-                                <input
-                                    type="text"
-                                    value={formData.department}
-                                    onChange={(e) => handleChange('department', e.target.value)}
-                                    placeholder="e.g., Emergency Medicine, ICU, Cardiology"
-                                    className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-blue-400 transition-all"
-                                />
-                            </div>
-
-                            <div>
-                                <label className="block text-gray-300 text-sm font-medium mb-2">
-                                    Hospital ID
-                                </label>
-                                <input
-                                    type="text"
-                                    value={formData.hospitalId}
-                                    onChange={(e) => handleChange('hospitalId', e.target.value)}
-                                    placeholder="e.g., HOSP-SF-001"
-                                    className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-blue-400 transition-all"
-                                />
-                            </div>
-                        </div>
-
-                        {/* Justification */}
-                        <div>
-                            <label className="block text-gray-300 text-sm font-medium mb-2">
-                                Justification <span className="text-red-400">*</span>
-                            </label>
-                            <textarea
-                                value={formData.justification}
-                                onChange={(e) => handleChange('justification', e.target.value)}
-                                placeholder="Please explain why you are requesting this role change. Include any relevant experience, achievements, or circumstances that support your request."
-                                rows={4}
-                                className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-blue-400 transition-all resize-vertical"
-                            />
-                        </div>
-
-                        {/* Priority Badge Preview */}
-                        {formData.priority && (
-                            <div className="flex items-center space-x-2">
-                                <span className="text-gray-300 text-sm">Request Priority:</span>
-                                <StatusBadge status={formData.priority === 'high' ? 'error' : formData.priority === 'medium' ? 'warning' : 'info'}>
-                                    {formData.priority.charAt(0).toUpperCase() + formData.priority.slice(1)} Priority
-                                </StatusBadge>
-                            </div>
-                        )}
-
-                        {/* Form Actions */}
-                        <div className="flex space-x-4 pt-4 border-t border-white/10">
-                            <button
-                                onClick={handleSubmit}
-                                disabled={isSubmitting || !formData.requestedRole || !formData.justification}
-                                className="flex-1 px-6 py-3 bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-xl hover:from-blue-600 hover:to-cyan-600 transition-all shadow-lg shadow-blue-500/25 flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
-                            >
-                                {isSubmitting ? (
-                                    <>
-                                        <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                                        <span>Submitting...</span>
-                                    </>
-                                ) : (
-                                    <>
-                                        <Send className="w-5 h-5" />
-                                        <span>Submit Request</span>
-                                    </>
-                                )}
-                            </button>
-                            <button
-                                onClick={onClose}
-                                className="px-6 py-3 bg-gradient-to-r from-gray-600 to-gray-700 text-white rounded-xl hover:from-gray-700 hover:to-gray-800 transition-all flex items-center justify-center space-x-2"
-                            >
-                                <X className="w-5 h-5" />
-                                <span>Cancel</span>
-                            </button>
-                        </div>
-                    </div>
-                </GlassCard>
-            </div>
-        </div>
-    );
-}
 
 // Mock User Data - Relevant for Medical App Users
 const userData = {
@@ -625,7 +291,7 @@ function UserProfilePage() {
     const [activeTab, setActiveTab] = useState('overview');
     const [isEditing, setIsEditing] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
-    const fileInputRef = useRef(null);
+    const fileInputRef = useRef<HTMLInputElement | null>(null);
 
     // Form states for editing
     const [editedUser, setEditedUser] = useState(userData);
@@ -652,8 +318,8 @@ function UserProfilePage() {
         fileInputRef.current?.click();
     };
 
-    const handleFileUpload = (event) => {
-        const file = event.target.files[0];
+    const handleFileUpload = (event: ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0];
         if (file) {
             console.log('Uploading avatar:', file);
             // Handle file upload logic here
@@ -1095,7 +761,7 @@ function UserProfilePage() {
                                     <h3 className="font-medium text-white">{result.test}</h3>
                                     <p className="text-emerald-400 text-sm">{result.result}</p>
                                     <p className="text-gray-400 text-xs">{new Date(result.date).toLocaleDateString()}</p>
-                                    <StatusBadge status="success" className="mt-2">{result.status}</StatusBadge>
+                                    <StatusBadge status="success">{result.status}</StatusBadge>
                                 </div>
                             ))}
                         </div>

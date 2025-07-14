@@ -1,6 +1,6 @@
 'use client'
 
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
 const ThemeContext = createContext({});
 
@@ -12,7 +12,9 @@ export const useTheme = () => {
     return context;
 };
 
-export const ThemeProvider = ({ children }) => {
+export const ThemeProvider = ({ children }:{
+    children: ReactNode
+}) => {
     const [isMobile, setIsMobile] = useState(false);
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
     const [isDarkMode, setIsDarkMode] = useState(true);
@@ -30,7 +32,7 @@ export const ThemeProvider = ({ children }) => {
 
     // Cursor tracking
     useEffect(() => {
-        const handleMouseMove = (e) => {
+        const handleMouseMove = (e:any) => {
             setMousePosition({
                 x: e.clientX,
                 y: e.clientY

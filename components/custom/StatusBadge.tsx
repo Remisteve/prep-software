@@ -10,14 +10,16 @@ export interface StatusInterface {
     icon: string
 }
 
-export const statusStyles: {
+export interface StatusStyleInterface {
     [key: string]: StatusInterface
     success: StatusInterface
     warning: StatusInterface
     error: StatusInterface
     info: StatusInterface
     neutral: StatusInterface
-} = {
+} 
+
+export const statusStyles: StatusStyleInterface= {
     success: {
         bg: 'bg-black/30',
         border: 'border-emerald-400/40',

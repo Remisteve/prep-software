@@ -3,7 +3,7 @@ import { NextRequest } from "next/server";
 import { writeFile, unlink } from "fs/promises";
 import { existsSync } from "fs";
 import path from "path";
-import { storage } from '@/lib/firebase-admin';
+// import { storage } from '@/lib/firebase-admin';
 
 export const POST = async (req: NextRequest) => {
   try {
@@ -50,15 +50,15 @@ export const POST = async (req: NextRequest) => {
       const destFileName = `images/users/profiles/${Date.now()}_${file.name}`;
       
       // Upload to Firebase Storage
-      await storage.upload(tempFilePath, {
-        destination: destFileName,
-        metadata: {
-          contentType: file.type || "image/jpeg",
-          firebaseStorageDownloadTokens: token, // ⬅️ This enables public access
+      // await storage.upload(tempFilePath, {
+      //   destination: destFileName,
+      //   metadata: {
+      //     contentType: file.type || "image/jpeg",
+      //     firebaseStorageDownloadTokens: token, // ⬅️ This enables public access
 
-        },
+      //   },
         
-      });
+      // });
 
       // Clean up temporary file
       await unlink(tempFilePath);

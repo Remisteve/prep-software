@@ -1,15 +1,16 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { format, formatDistanceToNow, isAfter, isBefore, isToday, isTomorrow, parseISO } from "date-fns";
+import { StatusStyleInterface } from "@/components/custom/StatusBadge";
 
 
-export function cn(...inputs) {
+export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
 // Status style helper
-export const getStatusStyles = (status) => {
-  const styles = {
+export const getStatusStyles = (status: string) => {
+  const styles: StatusStyleInterface = {
     success: {
       bg: 'bg-black/30',
       border: 'border-emerald-400/40',
