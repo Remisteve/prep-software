@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, ReactNode } from 'react';
 import {
     MapPin, Phone, Star, Navigation, Building2, Shield, Activity,
     Stethoscope, Heart, AlertTriangle, MessageCircle, Video,
@@ -8,6 +8,8 @@ import {
     Clock, Users, Calendar, ArrowRight, Sparkles, Eye
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import GlassCard from '@/components/custom/GlassCard';
+import { StatusInterface } from '@/components/custom/StatusBadge';
 
 // Facility Interface
 interface FacilityInterface {
@@ -26,8 +28,15 @@ interface FacilityInterface {
     nextAvailable: string;
 }
 
+
+
 // Status Color System (matching your theme)
-const statusStyles = {
+const statusStyles: {
+    [key: string]: StatusInterface
+    open: StatusInterface
+    closed: StatusInterface
+
+} = {
     open: {
         bg: 'bg-emerald-500/20',
         border: 'border-emerald-400/30',
@@ -42,29 +51,15 @@ const statusStyles = {
     }
 };
 
-// Enhanced Glass Card Component
-function GlassCard({ children, className = "", hover = false, variant = "default" }) {
-    const variants = {
-        default: "backdrop-blur-xl bg-black/30 border-white/20",
-        primary: "backdrop-blur-xl bg-black/40 border-blue-500/30",
-        success: "backdrop-blur-xl bg-black/40 border-emerald-500/30"
-    };
 
-    return (
-        <div className={`
-            rounded-2xl ${variants[variant]} border transition-all duration-300 relative overflow-hidden
-            ${hover ? 'hover:bg-black/50 hover:border-white/30 hover:scale-[1.01] hover:shadow-2xl hover:shadow-blue-500/20' : ''} 
-            ${className}
-        `}>
-            {/* Glass effect overlay */}
-            <div className="absolute inset-[1px] rounded-[15px] bg-gradient-to-br from-white/5 to-transparent pointer-events-none" />
-            {children}
-        </div>
-    );
-}
 
 // Enhanced Status Badge Component
-function StatusBadge({ status, children }) {
+function StatusBadge({ status, children }:
+    {
+        status: string
+        children: ReactNode
+    }
+) {
     const style = statusStyles[status] || statusStyles.closed;
     return (
         <span className={`inline-flex items-center px-3 py-1 text-xs font-medium rounded-full 
@@ -76,16 +71,18 @@ function StatusBadge({ status, children }) {
 }
 
 // Closest Facility Suggestion Component
-function ClosestFacilitySuggestion({ facility, onClick }) {
+function ClosestFacilitySuggestion({ facility }:
+    { facility: FacilityInterface, onClick: (facility: string) => void }
+) {
     return (
-        <GlassCard variant="primary" className="p-6 mb-6 cursor-pointer relative overflow-hidden group" hover onClick={() => onClick(facility)}>
+        <GlassCard variant="primary" className="p-6 mb-6 cursor-pointer relative overflow-hidden group" hover>
             {/* Background decorations */}
             <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 via-blue-500/10 to-cyan-500/5" />
             <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-emerald-400/50 to-transparent" />
-            
+
             {/* Sparkles */}
             <Sparkles className="absolute top-4 right-6 w-3 h-3 text-emerald-400 opacity-30 animate-pulse" />
-            
+
             <div className="relative z-10">
                 <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-4">
@@ -140,8 +137,10 @@ function ClosestFacilitySuggestion({ facility, onClick }) {
 }
 
 // Enhanced Facility Card Component
-function EnhancedFacilityCard({ facility, onContact, onClick }) {
-    const getStatusInfo = (status) => {
+function EnhancedFacilityCard({ facility, onContact, onClick }:
+    { facility: FacilityInterface, onContact: () => void, onClick: (facility: FacilityInterface) => void }
+) {
+    const getStatusInfo = (status: string) => {
         switch (status) {
             case 'open':
                 return { status: 'open', text: 'Open', dot: 'bg-emerald-400' };
@@ -165,11 +164,11 @@ function EnhancedFacilityCard({ facility, onContact, onClick }) {
     };
 
     return (
-        <GlassCard className="p-6 cursor-pointer relative overflow-hidden group" hover onClick={() => onClick(facility)}>
+        <GlassCard className="p-6 cursor-pointer relative overflow-hidden group" hover>
             {/* Background decoration */}
             <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-cyan-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-400/30 to-transparent" />
-            
+
             <div className="relative z-10">
                 <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center space-x-3">
@@ -316,10 +315,10 @@ function FacilitiesPage() {
             const matchesSearch = facility.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                 facility.type.toLowerCase().includes(searchTerm.toLowerCase()) ||
                 facility.services.some(s => s.toLowerCase().includes(searchTerm.toLowerCase()));
-            
+
             const matchesStatus = statusFilter === 'all' || facility.status === statusFilter;
             const matchesType = typeFilter === 'all' || facility.type === typeFilter;
-            
+
             return matchesSearch && matchesStatus && matchesType;
         });
 
@@ -356,9 +355,9 @@ function FacilitiesPage() {
                 <GlassCard variant="primary" className="p-6 relative overflow-hidden">
                     <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-cyan-500/10 to-purple-600/5" />
                     <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-400/50 to-transparent" />
-                    
+
                     <Sparkles className="absolute top-4 right-6 w-4 h-4 text-blue-400 opacity-30 animate-pulse" />
-                    
+
                     <div className="relative z-10">
                         <div className="flex items-center justify-between">
                             <div>
@@ -435,13 +434,13 @@ function FacilitiesPage() {
                 </div>
 
                 {/* Closest Facility Suggestion */}
-                {closestFacility && <ClosestFacilitySuggestion facility={closestFacility} onClick={handleCardClick} />}
+                {closestFacility && <ClosestFacilitySuggestion facility={closestFacility} onClick={() => handleCardClick(closestFacility)} />}
 
                 {/* Search and Filters */}
                 <GlassCard className="p-6 relative overflow-hidden">
                     <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-black/20 to-black/30" />
                     <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-400/30 to-transparent" />
-                    
+
                     <div className="relative z-10">
                         <div className="flex flex-col sm:flex-row gap-4 mb-4">
                             <div className="flex-1 relative">
@@ -538,7 +537,7 @@ function FacilitiesPage() {
                             <EnhancedFacilityCard
                                 key={facility.id}
                                 facility={facility}
-                                onContact={handleContact}
+                                onContact={() => handleContact(facility)}
                                 onClick={handleCardClick}
                             />
                         ))

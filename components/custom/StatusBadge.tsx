@@ -3,7 +3,7 @@
 import { ReactNode } from "react";
 
 
-interface StatusInterface {
+export interface StatusInterface {
     bg: string
     border: string
     text: string
